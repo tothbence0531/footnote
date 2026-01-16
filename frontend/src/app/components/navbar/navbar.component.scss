@@ -1,0 +1,62 @@
+@use "../../styles/index" as *;
+
+.wrapper {
+  background-color: var(--p-surface-0);
+}
+
+nav {
+  padding: $spacingSmall $spacingLargest;
+  box-shadow: $boxShadowHeavy;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .logo {
+    letter-spacing: -1px;
+    font-size: $fontSizeLarge;
+    font-weight: $fontWeightBold;
+    color: var(--p-primary-950);
+    margin: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: $spacingMedium;
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      i {
+        color: var(--p-primary-950);
+        font-size: $fontSizeMedium;
+        transition: $transitionFast;
+
+        &:hover {
+          color: var(--p-primary-600);
+          transition: $transitionFast;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-lg) {
+  nav {
+    padding: $spacingSmall $spacingLarger;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  nav {
+    padding: $spacingSmall $spacingLarge;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  nav {
+    padding: $spacingSmall $spacingMedium;
+  }
+}

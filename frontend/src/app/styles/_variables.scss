@@ -1,0 +1,49 @@
+// colors are defined by primeng as design tokens
+// ex. var(--p-primary-500)
+
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
+$fontSizeSmallest: 0.75rem;
+$fontSizeSmall: 1rem;
+$fontSizeMedium: 1.25rem;
+$fontSizeLarge: 1.5rem;
+$fontSizeLarger: 1.75rem;
+$fontSizeLargest: 2.25rem;
+$fonstSizeMax: 3rem;
+
+$fontWeightLight: 300;
+$fontWeightRegular: 400;
+$fontWeightSemiBold: 500;
+$fontWeightBold: 700;
+
+$fontFamilyPrimary: "DM Sans", sans-serif;
+$fontFamilySecondary: "Ledger", sans-serif;
+
+$spacingSmallest: 0.25rem;
+$spacingSmall: 0.5rem;
+$spacingMedium: 1rem;
+$spacingLarge: 2rem;
+$spacingLarger: 4rem;
+$spacingLargest: 8rem;
+
+$borderRadiusSmall: 0.25rem;
+$borderRadiusMedium: 0.5rem;
+$borderRadiusLarge: 1rem;
+$borderRadiusLarger: 2rem;
+$borderRadiusLargest: 100%;
+
+$boxShadowLight: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+$boxShadowMedium: 0 0.25rem 1rem rgba(0, 0, 0, 0.15);
+$boxShadowHeavy: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+
+$transitionFast: all 0.1s ease-in-out;
+$transitionMedium: all 0.3s ease-in-out;
+$transitionSlow: all 0.5s ease-in-out;
+
+$layerBottom: 0;
+$layerMiddle: 1;
+$layerTop: 2;

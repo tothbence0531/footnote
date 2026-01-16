@@ -1,0 +1,126 @@
+@use "../../styles/index" as *;
+
+.hero-wrapper {
+  padding: $spacingLarger 0;
+}
+
+.hero-layout {
+  display: flex;
+  justify-content: space-between;
+  gap: $spacingLarge;
+}
+
+.shelves {
+  img {
+    width: 18rem;
+    max-width: 100%;
+  }
+
+  &.left {
+    display: flex;
+    align-items: end;
+    transform: translateY(-5rem);
+  }
+
+  &.right {
+    img {
+      transform: translateY(5rem);
+    }
+  }
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .popular-books {
+    margin-top: $spacingLarge;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    justify-content: center;
+    gap: $spacingLarge;
+
+    .book {
+      img {
+        height: 16em;
+        box-shadow: $boxShadowHeavy;
+      }
+
+      img.book-1-cover {
+        height: 18rem;
+      }
+
+      .book-info {
+        display: none;
+      }
+    }
+  }
+}
+
+h1 {
+  text-align: center;
+  margin: 0 0 $spacingMedium 0;
+}
+
+hr {
+  width: 10rem;
+}
+
+.subtitle {
+  text-align: center;
+  margin: $spacingMedium 0;
+  max-width: 25rem;
+}
+
+.test {
+  background-color: white;
+  padding: 100rem 0;
+}
+
+@media (max-width: $breakpoint-lg) {
+  .shelves.left,
+  .shelves.right {
+    display: none;
+  }
+
+  .hero-layout {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: $breakpoint-md) {
+  .hero {
+    .popular-books {
+      gap: $spacingSmall;
+      .book {
+        img {
+          width: auto;
+          height: 10rem;
+        }
+        img.book-1-cover {
+          width: auto;
+          height: 12rem;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+  .hero {
+    .popular-books {
+      flex-direction: column;
+      gap: $spacingMedium;
+      .book {
+        img,
+        img.book-1-cover {
+          width: 10rem;
+          height: auto;
+        }
+      }
+    }
+  }
+}

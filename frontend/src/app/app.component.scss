@@ -1,0 +1,28 @@
+@use "./styles/index" as *;
+
+.qr-code {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: $layerTop;
+  i {
+    background-color: var(--p-primary-500);
+    padding: $spacingMedium;
+    border-radius: $borderRadiusLargest;
+    font-size: $fontSizeMedium;
+    color: var(--p-primary-100);
+    box-shadow: $boxShadowLight;
+    cursor: pointer;
+    transition: $transitionFast;
+
+    &:hover {
+      background-color: var(--p-primary-700);
+      transition: $transitionFast;
+    }
+
+    &:active {
+      background-color: var(--p-primary-900);
+      transition: $transitionFast;
+    }
+  }
+}

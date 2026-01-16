@@ -1,1 +1,68 @@
-/* You can add global styles to this file, and also import other style files */
+@use "bootstrap/scss/bootstrap";
+@use "./app/styles/index" as *;
+@import "primeicons/primeicons.css";
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Ledger&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap");
+body,
+html {
+  background-color: var(--p-primary-100);
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  color: var(--p-text-color);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+h1 {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 3rem;
+}
+
+h2 {
+  font-family: "Ledger", sans-serif;
+  font-weight: 400;
+  font-size: 2.25rem;
+}
+
+h3 {
+  font-family: "Ledger", sans-serif;
+  font-weight: 400;
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+
+p {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+hr {
+  margin: auto;
+  border: none;
+  height: 2px;
+  color: var(--p-primary-500);
+  background-color: var(--p-primary-700);
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+  html {
+    font-size: 0.9rem;
+  }
+}
