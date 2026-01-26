@@ -2,6 +2,11 @@
 
 .wrapper {
   background-color: var(--p-surface-0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $layerMiddle;
 }
 
 nav {
@@ -16,6 +21,7 @@ nav {
     font-weight: $fontWeightBold;
     color: var(--p-primary-950);
     margin: 0;
+    cursor: pointer;
   }
 
   .nav-links {

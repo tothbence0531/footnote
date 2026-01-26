@@ -1,11 +1,17 @@
 <div class="wrapper">
   <nav>
-    <p class="logo">FootNote</p>
+    <p class="logo" routerLink="/">FootNote</p>
     <ul class="nav-links">
-      <li class="nav-link"><i class="pi pi-plus-circle"></i></li>
-      <li class="nav-link"><i class="pi pi-compass"></i></li>
-      <li class="nav-link"><i class="pi pi-bookmark"></i></li>
-      <li class="nav-link"><i class="pi pi-user"></i></li>
+      <li class="nav-link" routerLink="/add-book">
+        <i class="pi pi-plus-circle"></i>
+      </li>
+      <li class="nav-link" routerLink="/discover">
+        <i class="pi pi-compass"></i>
+      </li>
+      <li class="nav-link" routerLink="/my-books">
+        <i class="pi pi-bookmark"></i>
+      </li>
+      <li class="nav-link" routerLink="/profile"><i class="pi pi-user"></i></li>
     </ul>
   </nav>
 </div>
