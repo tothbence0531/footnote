@@ -1,0 +1,64 @@
+# ===============================
+# Node.js / Express
+# ===============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===============================
+# Environment variables
+# ===============================
+.env
+.env.*
+!.env.example
+
+# ===============================
+# Build / runtime artifacts
+# ===============================
+dist/
+build/
+coverage/
+.tmp/
+.cache/
+
+# ===============================
+# Logs
+# ===============================
+logs/
+*.log
+
+# ===============================
+# Uploaded files / user content
+# ===============================
+uploads/
+public/uploads/
+
+# ===============================
+# Database
+# ===============================
+*.sqlite
+*.sqlite3
+*.db
+
+# ===============================
+# OS / Editor junk
+# ===============================
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+
+# ===============================
+# Testing
+# ===============================
+.nyc_output/
+jest-cache/
+
+# ===============================
+# Optional: Docker
+# ===============================
+docker-data/
+
