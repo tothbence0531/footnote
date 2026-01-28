@@ -1,1 +1,76 @@
-<p>add-book works!</p>
+<div class="wrapper">
+  <div class="container">
+    <h1>Add Book</h1>
+    <form class="add-book-form">
+      <div class="info-inputs">
+        <p-iftalabel>
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-book"></p-inputicon>
+            <input id="book-title" pInputText fluid="true" />
+          </p-iconfield>
+          <label for="book-title">Title</label>
+        </p-iftalabel>
+        <small class="helper">Title of the book you want to add</small>
+        <p-iftalabel>
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-user"></p-inputicon>
+            <input id="book-author" pInputText fluid="true" />
+          </p-iconfield>
+          <label for="book-author">Author</label>
+        </p-iftalabel>
+        <small class="helper">Who wrote the book?</small>
+
+        <p-iftalabel>
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-map"></p-inputicon>
+            <input id="location" pInputText fluid="true" />
+          </p-iconfield>
+          <label for="location">Location</label>
+        </p-iftalabel>
+        <small class="helper"
+          >Never give your exact location, just a general area</small
+        >
+
+        <p-iftalabel>
+          <textarea
+            id="description-textarea"
+            rows="5"
+            fluid="true"
+            pTextarea
+          ></textarea>
+          <label for="description-textarea">Description</label>
+        </p-iftalabel>
+        <small class="helper"
+          >Tell your feelings about the story and it's meaning to you</small
+        >
+
+        <p-rating class="rating"></p-rating>
+      </div>
+      <div class="image-upload">
+        <p-fileupload
+          name="demo[]"
+          (onUpload)="onUpload($event)"
+          [multiple]="true"
+          accept="image/*"
+          maxFileSize="1000000"
+          mode="advanced"
+          fileLimit="3"
+        >
+          <ng-template #empty>
+            <div>Drag and drop files here to upload.</div>
+          </ng-template>
+          <ng-template #content>
+            @if (uploadedFiles.length) {
+              <ul>
+                @for (file of uploadedFiles; track $index) {
+                  <li>{{ file.name }} - {{ file.size }} bytes</li>
+                }
+              </ul>
+            }
+          </ng-template>
+        </p-fileupload>
+        <p-button label="Add Book"></p-button>
+      </div>
+    </form>
+  </div>
+</div>

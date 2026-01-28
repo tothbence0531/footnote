@@ -1,0 +1,38 @@
+@use "../../styles/index" as *;
+
+p-dialog {
+  form {
+    p-float-label {
+      margin-top: $spacingMedium;
+    }
+
+    .login {
+      text-align: center;
+      margin-top: $spacingMedium;
+
+      span {
+        cursor: pointer;
+        color: var(--p-primary-color);
+        font-weight: 500;
+        transition: color 0.15s ease-in-out;
+
+        &:hover {
+          transition: color 0.15s ease-in-out;
+          cursor: pointer;
+          color: var(--p-primary-active-color);
+        }
+      }
+    }
+
+    label {
+      font-weight: 500;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: $spacingSmall;
+      margin-top: $spacingMedium;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 @use "../../styles/index" as *;
 
 .hero-wrapper {
-  margin-top: $spacingLarge;
+  background-color: var(--p-primary-100);
   padding: $spacingLarger 0;
   .hero-layout {
     display: flex;

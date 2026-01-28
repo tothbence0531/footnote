@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <nav>
+  <div class="navbar container">
     <p class="logo" routerLink="/">FootNote</p>
     <ul class="nav-links">
       <li class="nav-link" routerLink="/add-book">
@@ -11,7 +11,10 @@
       <li class="nav-link" routerLink="/my-books">
         <i class="pi pi-bookmark"></i>
       </li>
-      <li class="nav-link" routerLink="/profile"><i class="pi pi-user"></i></li>
+      <!-- <li class="nav-link" routerLink="/profile"><i class="pi pi-user"></i></li> -->
+      <li class="nav-link" (click)="showDialog()">
+        <i class="pi pi-sign-in"></i>
+      </li>
     </ul>
-  </nav>
+  </div>
 </div>

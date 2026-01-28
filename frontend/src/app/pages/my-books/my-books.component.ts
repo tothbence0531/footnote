@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { BookCardComponent } from '../../components/book-card/book-card.component';
 
 @Component({
   selector: 'app-my-books',
-  imports: [],
+  imports: [BookCardComponent],
   templateUrl: './my-books.component.html',
-  styleUrl: './my-books.component.scss'
+  styleUrl: './my-books.component.scss',
 })
-export class MyBooksComponent {
-
-}
+export class MyBooksComponent {}

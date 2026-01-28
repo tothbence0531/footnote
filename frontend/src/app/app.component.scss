@@ -1,10 +1,13 @@
 @use "./styles/index" as *;
 
+.app-wrapper {
+  padding-top: $pageTopMargin;
+}
+
 .qr-code {
   position: fixed;
   bottom: 1rem;
   right: 1rem;
-  z-index: $layerMiddle;
   i {
     background-color: var(--p-primary-500);
     padding: $spacingMedium;

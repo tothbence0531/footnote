@@ -1,0 +1,77 @@
+<p-dialog
+  header="Sign up"
+  [modal]="true"
+  [focusOnShow]="false"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [closable]="true"
+  [visible]="visible()"
+  (visibleChange)="visibleChange.emit($event)"
+  [style]="{ width: '25rem' }"
+>
+  <form [formGroup]="form">
+    <div>
+      <p-float-label variant="on">
+        <p-icon-field>
+          <input pInputText formControlName="email" fluid="true" id="email" />
+          <label for="email">Email</label>
+          <p-inputicon class="pi pi-envelope" />
+        </p-icon-field>
+      </p-float-label>
+      <p-float-label variant="on">
+        <p-icon-field>
+          <input
+            pInputText
+            formControlName="username"
+            fluid="true"
+            id="username"
+          />
+          <label for="username">Username</label>
+          <p-inputicon class="pi pi-user" />
+        </p-icon-field>
+      </p-float-label>
+      <p-float-label variant="on">
+        <p-password
+          id="password"
+          formControlName="password"
+          [feedback]="true"
+          [fluid]="true"
+          [toggleMask]="true"
+        />
+        <label id="password">Password</label>
+      </p-float-label>
+      <p-float-label variant="on">
+        <p-password
+          id="passwordConfirm"
+          formControlName="passwordConfirm"
+          [feedback]="false"
+          [fluid]="true"
+          [toggleMask]="true"
+        />
+        <label id="passwordConfirm">Password Confirm</label>
+      </p-float-label>
+    </div>
+
+    <p class="login">
+      Already have an account?
+      <span (click)="openLogin()">Login</span>
+    </p>
+
+    <div class="buttons">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        type="button"
+        (click)="close()"
+      />
+      <p-button
+        label="Sign up"
+        icon="pi pi-sign-in"
+        type="button"
+        [disabled]="form.invalid"
+        [loading]="loading()"
+        (click)="submit()"
+      />
+    </div>
+  </form>
+</p-dialog>

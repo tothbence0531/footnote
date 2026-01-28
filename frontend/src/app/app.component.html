@@ -9,4 +9,15 @@
 <div class="qr-code" routerLink="/scan-qr">
   <i class="pi pi-qrcode"></i>
 </div>
-<router-outlet></router-outlet>
+
+<div class="app-wrapper">
+  <app-login-dialog
+    [visible]="authDialogService.loginVisible()"
+    (visibleChange)="authDialogService.loginVisible.set($event)"
+  ></app-login-dialog>
+  <app-signup-dialog
+    [visible]="authDialogService.signUpVisible()"
+    (visibleChange)="authDialogService.signUpVisible.set($event)"
+  ></app-signup-dialog>
+  <router-outlet></router-outlet>
+</div>

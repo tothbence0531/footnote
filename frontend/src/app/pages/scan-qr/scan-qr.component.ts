@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-scan-qr',
   imports: [],
   templateUrl: './scan-qr.component.html',
-  styleUrl: './scan-qr.component.scss'
+  styleUrl: './scan-qr.component.scss',
 })
-export class ScanQrComponent {
-
-}
+export class ScanQrComponent {}

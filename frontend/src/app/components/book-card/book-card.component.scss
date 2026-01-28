@@ -1,0 +1,94 @@
+@use "../../styles/index" as *;
+
+.wrapper {
+  .book-card {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--p-primary-100);
+    padding: $spacingLarge;
+    gap: $spacingMedium;
+    align-items: stretch;
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      width: 60%;
+
+      .book-card-image {
+        width: 100%;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .download-qr {
+        margin: $spacingSmall 0 0 0;
+        transition: $transitionFast;
+        &:hover {
+          color: var(--p-primary-700);
+          cursor: pointer;
+          transition: $transitionFast;
+        }
+      }
+    }
+
+    .middle-col {
+      display: flex;
+      flex-direction: column;
+
+      .rating {
+        --p-rating-icon-size: 1.5rem;
+        margin: $spacingSmall 0;
+      }
+
+      .description {
+        margin-top: $spacingSmall;
+      }
+
+      .readers {
+        margin-top: auto;
+        align-self: flex-end;
+      }
+    }
+
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: $spacingMedium;
+      background-color: var(--p-primary-500);
+      color: var(--p-primary-100);
+      padding: $spacingMedium;
+      margin-bottom: -($spacingLarge + 2.5rem);
+      margin-top: -($spacingLarge + 0.3rem);
+
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 20px),
+        50% 100%,
+        0 calc(100% - 20px)
+      );
+
+      p {
+        margin: 0;
+        font-weight: 400;
+        letter-spacing: 0.05ch;
+        writing-mode: vertical-lr;
+        text-orientation: sideways;
+      }
+
+      .book-owner {
+        margin-top: $spacingMedium;
+      }
+
+      .book-added-at {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

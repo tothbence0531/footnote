@@ -1,0 +1,41 @@
+@use "../../styles/index" as *;
+
+p-dialog {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacingSmall;
+
+    .signup {
+      text-align: center;
+      margin-top: $spacingSmall;
+
+      span {
+        cursor: pointer;
+        color: var(--p-primary-color);
+        font-weight: 500;
+        transition: color 0.15s ease-in-out;
+
+        &:hover {
+          transition: color 0.15s ease-in-out;
+          cursor: pointer;
+          color: var(--p-primary-active-color);
+        }
+      }
+    }
+
+    p-floatlabel {
+      margin-top: $spacingSmall;
+    }
+    label {
+      font-weight: 500;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: $spacingSmall;
+      margin-top: $spacingSmall;
+    }
+  }
+}

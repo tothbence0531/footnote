@@ -1,0 +1,57 @@
+<p-dialog
+  header="Login"
+  [modal]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [closable]="true"
+  [focusOnShow]="false"
+  [visible]="visible()"
+  (visibleChange)="visibleChange.emit($event)"
+  [style]="{ width: '25rem' }"
+>
+  <form [formGroup]="form">
+    <p-floatlabel variant="on">
+      <p-icon-field>
+        <input
+          fluid="true"
+          pInputText
+          formControlName="username"
+          id="username" /><p-inputicon class="pi pi-user"
+      /></p-icon-field>
+
+      <label for="username">Username</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="on">
+      <p-password
+        fluid="true"
+        id="password"
+        formControlName="password"
+        [feedback]="false"
+        [toggleMask]="true"
+      />
+      <label for="password">Password</label>
+    </p-floatlabel>
+    <div class="signup">
+      Don't have an account?
+      <span (click)="openRegister()">Sign up</span>
+    </div>
+
+    <div class="buttons">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        type="button"
+        (click)="close()"
+      />
+      <p-button
+        label="Login"
+        icon="pi pi-sign-in"
+        type="button"
+        [disabled]="form.invalid"
+        [loading]="loading()"
+        (click)="submit()"
+      />
+    </div>
+  </form>
+</p-dialog>
