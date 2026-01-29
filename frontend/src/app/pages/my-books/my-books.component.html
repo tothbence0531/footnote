@@ -1,6 +1,21 @@
 <div class="wrapper">
   <div class="container">
     <h1>My Books</h1>
-    <app-book-card></app-book-card>
+    <div class="tree">
+      <div class="parent-row">
+        <app-book-card class="parent-card"></app-book-card>
+      </div>
+      <div class="children">
+        <div class="child">
+          <app-book-event-card class="child-card"></app-book-event-card>
+        </div>
+        <div class="child">
+          <app-book-event-card class="child-card"></app-book-event-card>
+        </div>
+        <div class="child">
+          <app-book-event-card class="child-card"></app-book-event-card>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,0 +1,39 @@
+@use "../../styles/index" as *;
+
+.wrapper {
+  .book-event-card {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--p-primary-100);
+    padding: $spacingLarge;
+    gap: $spacingMedium;
+
+    .info-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      gap: $spacingSmall;
+
+      .event-info {
+        display: flex;
+        flex-direction: row;
+        gap: $spacingSmall;
+      }
+      .rating {
+        margin: $spacingSmall 0;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .image-wrapper {
+      width: 70%;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+}

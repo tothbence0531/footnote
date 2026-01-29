@@ -1,5 +1,80 @@
 @use "../../styles/index" as *;
 
+// Változók
+$line-width: 0.15rem;
+$line-color: var(--p-surface-300);
+$child-margin: $spacingLarge;
+$child-padding: 2.5rem;
+$line-left: $child-padding/2;
+$parent-child-gap: $spacingLarger;
+$media-mobile: $breakpoint-sm;
+
 .wrapper {
   margin-top: $spacingLarger;
+
+  .tree {
+    position: relative;
+  }
+
+  .parent-row {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: $line-left;
+      top: 100%;
+      width: $line-width;
+      height: $parent-child-gap;
+      background: $line-color;
+    }
+  }
+
+  .parent-card {
+    position: relative;
+  }
+
+  .children {
+    position: relative;
+    margin-top: $parent-child-gap;
+    padding-left: $child-padding;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: $line-left;
+      top: 0;
+      bottom: 0;
+      width: $line-width;
+      background: $line-color;
+    }
+  }
+
+  .child {
+    position: relative;
+    margin-bottom: $child-margin;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: -$line-left;
+      top: 50%;
+      width: $line-left;
+      height: $line-width;
+      background: $line-color;
+    }
+  }
+
+  @media (max-width: $media-mobile) {
+    .children::before,
+    .child::before,
+    .parent-row::after {
+      display: none;
+    }
+
+    .parent-row,
+    .children {
+      padding-left: 0;
+    }
+  }
 }
