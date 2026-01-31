@@ -5,7 +5,7 @@
   <h4>DM Sans, Medium, 32/40</h4>
   <h5>DM Sans, Medium, 24/32</h5>
   <p>DM Sans, Medium 16/24</p> -->
-<app-navbar class="app-navbar"></app-navbar>
+<app-navbar class="app-navbar" (logout)="onLogout()"></app-navbar>
 <div class="qr-code" routerLink="/scan-qr">
   <i class="pi pi-qrcode"></i>
 </div>
@@ -14,10 +14,12 @@
   <app-login-dialog
     [visible]="authDialogService.loginVisible()"
     (visibleChange)="authDialogService.loginVisible.set($event)"
+    (submitLogin)="this.submitLogin($event)"
   ></app-login-dialog>
   <app-signup-dialog
     [visible]="authDialogService.signUpVisible()"
     (visibleChange)="authDialogService.signUpVisible.set($event)"
+    (submitSignup)="this.submitSignup($event)"
   ></app-signup-dialog>
   <router-outlet></router-outlet>
 </div>

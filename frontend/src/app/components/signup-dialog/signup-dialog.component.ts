@@ -36,7 +36,7 @@ export class SignupDialogComponent {
   visibleChange = output<boolean>();
   loading = signal(false);
 
-  submitLogin = output<{ username: string; password: string }>();
+  submitSignup = output<{ username: string; password: string }>();
 
   constructor(private AuthDialogService: DialogService) {}
 
@@ -70,7 +70,7 @@ export class SignupDialogComponent {
 
   submit() {
     if (this.form.invalid) return;
-    this.submitLogin.emit(this.form.getRawValue());
+    this.submitSignup.emit(this.form.getRawValue());
     this.loading.set(true);
   }
 }

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from '../../services/dialog.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,9 +12,22 @@ import { DialogService } from '../../services/dialog.service';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  constructor(private authDialogService: DialogService) {}
+  logout = output();
+
+  constructor(
+    private authDialogService: DialogService,
+    private AuthService: AuthService,
+  ) {}
   showDialog() {
     this.authDialogService.showLogin();
   }
   visible = false;
+
+  isLoggedIn() {
+    return this.AuthService.isLoggedIn();
+  }
+
+  onLogout() {
+    this.logout.emit();
+  }
 }

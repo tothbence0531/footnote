@@ -4,6 +4,9 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class DialogService {
+  signUp($event: { username: string; password: string }) {
+    throw new Error('Method not implemented.');
+  }
   loginVisible = signal(false);
   signUpVisible = signal(false);
 

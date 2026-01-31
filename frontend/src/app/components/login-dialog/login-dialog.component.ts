@@ -35,12 +35,12 @@ export class LoginDialogComponent {
   visible = input<boolean>(false);
   visibleChange = output<boolean>();
   loading = signal(false);
-  submitLogin = output<{ username: string; password: string }>();
+  submitLogin = output<{ email: string; password: string }>();
 
   constructor(private authDialogService: DialogService) {}
 
   form = new FormGroup({
-    username: new FormControl('', {
+    email: new FormControl('', {
       nonNullable: true,
       validators: Validators.required,
     }),

@@ -6,7 +6,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { definePreset } from '@primeuix/themes';
-import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth.interceptor';
 
 const mainPreset = definePreset(Aura, {
   semantic: {
@@ -64,7 +69,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
