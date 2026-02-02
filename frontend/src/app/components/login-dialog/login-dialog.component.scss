@@ -4,7 +4,6 @@ p-dialog {
   form {
     display: flex;
     flex-direction: column;
-    gap: $spacingSmall;
 
     .signup {
       text-align: center;
@@ -25,7 +24,7 @@ p-dialog {
     }
 
     p-floatlabel {
-      margin-top: $spacingSmall;
+      margin-top: $spacingMedium;
     }
     label {
       font-weight: 500;

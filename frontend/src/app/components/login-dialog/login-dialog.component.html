@@ -21,6 +21,16 @@
 
       <label for="email">Email</label>
     </p-floatlabel>
+    <small
+      class="helper error"
+      [class.visible]="fc.email.invalid && fc.email.touched && fc.email.dirty"
+    >
+      @if (fc.email.errors?.["required"]) {
+        Email is required
+      }
+      &#8203;
+      <!-- zero-width space for transition -->
+    </small>
 
     <p-floatlabel variant="on">
       <p-password
@@ -32,6 +42,18 @@
       />
       <label for="password">Password</label>
     </p-floatlabel>
+    <small
+      class="helper error"
+      [class.visible]="
+        fc.password.invalid && fc.password.touched && fc.password.dirty
+      "
+    >
+      @if (fc.password.errors?.["required"]) {
+        Password is required
+      }
+      &#8203;
+      <!-- zero-width space for transition -->
+    </small>
     <div class="signup">
       Don't have an account?
       <span (click)="openRegister()">Sign up</span>

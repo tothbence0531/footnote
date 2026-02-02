@@ -12,6 +12,7 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { MessageService } from 'primeng/api';
 
 const mainPreset = definePreset(Aura, {
   semantic: {
@@ -71,6 +72,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
     provideAnimationsAsync(),
+    MessageService,
     providePrimeNG({
       theme: {
         preset: mainPreset,

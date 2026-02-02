@@ -10,16 +10,20 @@
   <i class="pi pi-qrcode"></i>
 </div>
 
+<p-toast></p-toast>
+
 <div class="app-wrapper">
   <app-login-dialog
     [visible]="authDialogService.loginVisible()"
     (visibleChange)="authDialogService.loginVisible.set($event)"
     (submitLogin)="this.submitLogin($event)"
+    [loading]="loginLoading()"
   ></app-login-dialog>
   <app-signup-dialog
     [visible]="authDialogService.signUpVisible()"
     (visibleChange)="authDialogService.signUpVisible.set($event)"
     (submitSignup)="this.submitSignup($event)"
+    [loading]="this.signupLoading()"
   ></app-signup-dialog>
   <router-outlet></router-outlet>
 </div>

@@ -18,6 +18,20 @@
           <p-inputicon class="pi pi-envelope" />
         </p-icon-field>
       </p-float-label>
+
+      <small
+        class="helper error"
+        [class.visible]="fc.email.invalid && fc.email.touched && fc.email.dirty"
+      >
+        @if (fc.email.errors?.["required"]) {
+          Email is required
+        } @else if (fc.email.errors?.["email"]) {
+          Invalid email
+        }
+        &#8203;
+        <!-- zero-width space for transition -->
+      </small>
+
       <p-float-label variant="on">
         <p-icon-field>
           <input
@@ -30,16 +44,55 @@
           <p-inputicon class="pi pi-user" />
         </p-icon-field>
       </p-float-label>
-      <p-float-label variant="on">
-        <p-password
-          id="password"
-          formControlName="password"
-          [feedback]="true"
-          [fluid]="true"
-          [toggleMask]="true"
-        />
-        <label id="password">Password</label>
-      </p-float-label>
+
+      <small
+        class="helper error"
+        [class.visible]="
+          fc.username.invalid && fc.username.touched && fc.username.dirty
+        "
+      >
+        @if (fc.username.errors?.["required"]) {
+          Username is required
+        } @else if (fc.username.errors?.["minlength"]) {
+          Username must be at least 3 characters long
+        } @else if (fc.username.errors?.["maxlength"]) {
+          Username must be less than 30 characters long
+        } @else if (fc.username.errors?.["pattern"]) {
+          Username must be alphanumeric
+        }
+        &#8203;
+        <!-- zero-width space for transition -->
+      </small>
+
+      <div class="password-wrapper">
+        <p-float-label variant="on">
+          <p-password
+            id="password"
+            formControlName="password"
+            [feedback]="true"
+            [fluid]="true"
+            [toggleMask]="true"
+          />
+          <label id="password">Password</label>
+        </p-float-label>
+      </div>
+      <small
+        class="helper error"
+        [class.visible]="
+          fc.password.invalid && fc.password.touched && fc.password.dirty
+        "
+      >
+        @if (fc.password.errors?.["required"]) {
+          Password is required
+        } @else if (fc.password.errors?.["minlength"]) {
+          Password must be at least 8 characters long
+        } @else if (fc.password.errors?.["pattern"]) {
+          Must contain uppercase letter, lowercase letter and number
+        }
+        &#8203;
+        <!-- zero-width space for transition -->
+      </small>
+
       <p-float-label variant="on">
         <p-password
           id="passwordConfirm"
@@ -50,6 +103,14 @@
         />
         <label id="passwordConfirm">Password Confirm</label>
       </p-float-label>
+      <small
+        class="helper error"
+        [class.visible]="
+          form.hasError('passwordMismatch') && fc.passwordConfirm.touched
+        "
+      >
+        Passwords do not match
+      </small>
     </div>
 
     <p class="login">

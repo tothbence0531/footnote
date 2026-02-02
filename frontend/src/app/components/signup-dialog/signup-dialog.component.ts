@@ -14,6 +14,7 @@ import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
+import { passwordMatchValidator } from '../../validators/password-match.validator';
 
 @Component({
   selector: 'app-signup-dialog',
@@ -34,30 +35,53 @@ import { InputTextModule } from 'primeng/inputtext';
 export class SignupDialogComponent {
   visible = input<boolean>(false);
   visibleChange = output<boolean>();
-  loading = signal(false);
+  loading = input<boolean>(false);
 
   submitSignup = output<{ username: string; password: string }>();
 
   constructor(private AuthDialogService: DialogService) {}
 
-  form = new FormGroup({
-    email: new FormControl('', {
-      nonNullable: true,
-      validators: Validators.required,
-    }),
-    username: new FormControl('', {
-      nonNullable: true,
-      validators: Validators.required,
-    }),
-    password: new FormControl('', {
-      nonNullable: true,
-      validators: Validators.required,
-    }),
-    passwordConfirm: new FormControl('', {
-      nonNullable: true,
-      validators: Validators.required,
-    }),
-  });
+  form = new FormGroup(
+    {
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.email],
+      }),
+      username: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(30),
+          Validators.pattern('^[a-zA-Z0-9_]+$'),
+        ],
+      }),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/),
+        ],
+      }),
+      passwordConfirm: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/),
+        ],
+      }),
+    },
+    { validators: passwordMatchValidator },
+  );
+
+  /**
+   * returns the form controls for signing up
+   */
+  get fc() {
+    return this.form.controls;
+  }
 
   close() {
     this.visibleChange.emit(false);
@@ -71,6 +95,5 @@ export class SignupDialogComponent {
   submit() {
     if (this.form.invalid) return;
     this.submitSignup.emit(this.form.getRawValue());
-    this.loading.set(true);
   }
 }

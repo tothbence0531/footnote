@@ -57,6 +57,31 @@ small.helper {
   margin: 0;
   padding: 0;
   padding-left: $spacingSmall;
+  font-size: $fontSizeSmallest;
+}
+
+small.error {
+  color: var(--p-red-600);
+}
+
+small.helper.error {
+  display: block;
+  overflow: hidden;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+
+  transition:
+    max-height 0.25s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+  &.visible {
+    max-height: 3rem;
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 hr {

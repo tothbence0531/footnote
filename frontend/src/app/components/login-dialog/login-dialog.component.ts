@@ -34,7 +34,7 @@ import { DialogModule } from 'primeng/dialog';
 export class LoginDialogComponent {
   visible = input<boolean>(false);
   visibleChange = output<boolean>();
-  loading = signal(false);
+  loading = input<boolean>(false);
   submitLogin = output<{ email: string; password: string }>();
 
   constructor(private authDialogService: DialogService) {}
@@ -50,6 +50,13 @@ export class LoginDialogComponent {
     }),
   });
 
+  /**
+   * returns the form controls for logging in
+   */
+  get fc() {
+    return this.form.controls;
+  }
+
   close() {
     this.visibleChange.emit(false);
   }
@@ -62,6 +69,5 @@ export class LoginDialogComponent {
   submit() {
     if (this.form.invalid) return;
     this.submitLogin.emit(this.form.getRawValue());
-    this.loading.set(true);
   }
 }

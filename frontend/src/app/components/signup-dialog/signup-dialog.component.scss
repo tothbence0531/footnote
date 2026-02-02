@@ -1,7 +1,13 @@
 @use "../../styles/index" as *;
-
 p-dialog {
   form {
+    .password-wrapper {
+      transition: $transitionFast;
+      &:focus-within {
+        padding-bottom: 4.5rem;
+      }
+    }
+
     p-float-label {
       margin-top: $spacingMedium;
     }
