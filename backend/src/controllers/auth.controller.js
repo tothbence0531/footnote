@@ -2,7 +2,7 @@ import * as authService from "../services/auth.service.js";
 
 export async function register(req, res, next) {
   try {
-    const { email, password, username } = req.body;
+    const { email, password, username } = req.validatedBody;
     const user = await authService.register(email, password, username);
 
     res.status(201).json({
@@ -63,7 +63,7 @@ export async function refresh(req, res, next) {
       path: "/",
     });
 
-    res.json({ accessToken });
+    res.json({ success: true, data: { accessToken } });
   } catch (err) {
     next(err);
   }

@@ -10,6 +10,8 @@ import {
 } from "../utils/authErrors.js";
 
 export async function register(email, password, username) {
+  if (!email || !password || !username) throw new MissingCredentialsError();
+
   const existsByEmail = await userDao.selectUserByEmail(email);
   if (existsByEmail) throw new UserAlreadyExistsError("Email already in use");
 

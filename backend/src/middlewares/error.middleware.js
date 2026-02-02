@@ -1,6 +1,15 @@
 import { AppError } from "../utils/appError.js";
 
 export function errorMiddleware(err, req, res, next) {
+  if (process.env.NODE_ENV !== "production") {
+    console.error("ERROR Details:", {
+      name: err.name,
+      code: err.code,
+      message: err.message,
+      errno: err.errno,
+    });
+  }
+
   if (err.isOperational) {
     return res.status(err.statusCode).json({
       success: false,
@@ -11,7 +20,42 @@ export function errorMiddleware(err, req, res, next) {
     });
   }
 
-  // Database erroros
+  // Validation errors
+  if (err.errCode === "VALIDATION_ERROR") {
+    return res.status(400).json({
+      success: false,
+      error: {
+        code: "VALIDATION_ERROR",
+        message: "Validation error",
+        details: err.details.map((d) => ({
+          field: d.path[0],
+          message: d.message,
+        })),
+      },
+    });
+  }
+
+  // Database errors
+
+  if (
+    err.code === "ECONNREFUSED" ||
+    err.code === "ENOTFOUND" ||
+    err.errno === -111 ||
+    err.code === "PROTOCOL_CONNECTION_LOST" ||
+    err.message?.includes("connect ECONNREFUSED") ||
+    err.message?.includes("Connection terminated")
+  ) {
+    // Database connection errors
+    return res.status(503).json({
+      success: false,
+      error: {
+        code: "DATABASE_UNAVAILABLE",
+        message:
+          "Database connection failed. Please ensure PostgreSQL is running.",
+      },
+    });
+  }
+
   if (err.code === "23505") {
     // PostgreSQL unique violation
     return res.status(409).json({
@@ -19,6 +63,16 @@ export function errorMiddleware(err, req, res, next) {
       error: {
         code: "DUPLICATE_ENTRY",
         message: "Resource already exists",
+      },
+    });
+  }
+
+  if (err.code?.startsWith("23")) {
+    return res.status(400).json({
+      success: false,
+      error: {
+        code: "DATABASE_CONSTRAINT_ERROR",
+        message: "Database constraint violation",
       },
     });
   }
