@@ -23,3 +23,9 @@ export class UserAlreadyExistsError extends AppError {
     super(message, 409, "USER_ALREADY_EXISTS");
   }
 }
+
+export class UserNotFoundError extends AppError {
+  constructor(message = "User not found") {
+    super(message, 401, "USER_NOT_FOUND");
+  }
+}

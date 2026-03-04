@@ -88,6 +88,7 @@ export async function logout(req, res, next) {
 export async function me(req, res, next) {
   try {
     const user = req.user;
+
     res.json({
       success: true,
       data: {
