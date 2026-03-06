@@ -5,3 +5,18 @@ export interface User {
   points?: number;
   createdAt?: string;
 }
+
+export interface getMeResponse {
+  success: boolean;
+  data: {
+    userId: string;
+    iat: number;
+    exp: number;
+  };
+}
+
+export interface Me {
+  userId: string;
+  iat: number;
+  exp: number;
+}

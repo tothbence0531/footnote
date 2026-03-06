@@ -1,21 +1,55 @@
-<div class="wrapper">
-  <div class="container">
-    <h1>My Books</h1>
-    <div class="tree">
-      <div class="parent-row">
-        <app-book-card class="parent-card"></app-book-card>
+<div class="wrapper container">
+  @if (this.ownedBooks().length > 0) {
+    <h2>Books you uploaded</h2>
+    <hr />
+
+    <section class="owner shelf">
+      <div class="covers" appDragscroll>
+        @for (book of this.ownedBooks(); track $index) {
+          <div class="cover">
+            @if (!book.imageError) {
+              <img
+                (error)="onImageError(book)"
+                [src]="`${this.API_URL}${book.cover_image_url}`"
+              />
+            } @else {
+              <p>{{ book.title }}</p>
+            }
+          </div>
+        }
       </div>
-      <div class="children">
-        <div class="child">
-          <app-book-event-card class="child-card"></app-book-event-card>
-        </div>
-        <div class="child">
-          <app-book-event-card class="child-card"></app-book-event-card>
-        </div>
-        <div class="child">
-          <app-book-event-card class="child-card"></app-book-event-card>
-        </div>
+      <div class="titles">
+        @for (book of this.ownedBooks(); track $index) {
+          <div class="title">
+            <h5>{{ book.title }}</h5>
+          </div>
+        }
       </div>
-    </div>
-  </div>
+    </section>
+  }
+
+  @if (this.readBooks().length > 0) {
+    <h2>Books you found</h2>
+    <hr />
+    <section class="finder shelf">
+      <div class="covers" appDragscroll>
+        @for (book of this.readBooks(); track $index) {
+          <div class="cover">
+            @if (!book.imageError) {
+              <img (error)="onImageError(book)" [src]="book.cover_image_url" />
+            } @else {
+              <p>{{ book.title }}</p>
+            }
+          </div>
+        }
+      </div>
+      <div class="titles">
+        @for (book of this.readBooks(); track $index) {
+          <div class="title">
+            <h5>{{ book.title }}</h5>
+          </div>
+        }
+      </div>
+    </section>
+  }
 </div>

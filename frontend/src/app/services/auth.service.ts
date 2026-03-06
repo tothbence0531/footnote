@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.dev';
 import { LoginResponse } from '../models/loginResponse.model';
-import { User } from '../models/user.model';
+import { getMeResponse, Me, User } from '../models/user.model';
 import {
   BehaviorSubject,
   Observable,
@@ -25,7 +25,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private currentUserSubject = new BehaviorSubject<Me | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
   private isInitializing = new BehaviorSubject<boolean>(true);
@@ -53,15 +53,12 @@ export class AuthService {
       .subscribe();
   }
 
-  // Getter az access tokenhez
   get accessToken(): string | null {
     return getAccessToken();
   }
 
-  getMe(): Observable<{ success: boolean; data: User }> {
-    return this.http.get<{ success: boolean; data: User }>(
-      `${this.apiUrl}/auth/me`,
-    );
+  getMe(): Observable<getMeResponse> {
+    return this.http.get<getMeResponse>(`${this.apiUrl}/auth/me`);
   }
 
   login(email: string, password: string): Observable<void> {

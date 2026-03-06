@@ -5,6 +5,7 @@ import { DiscoverComponent } from './pages/discover/discover.component';
 import { MyBooksComponent } from './pages/my-books/my-books.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ScanQrComponent } from './pages/scan-qr/scan-qr.component';
+import { BookDetailsComponent } from './pages/book-details/book-details.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'my-books', component: MyBooksComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'scan-qr', component: ScanQrComponent },
+  { path: 'book', component: BookDetailsComponent },
   { path: '**', redirectTo: '' },
 ];

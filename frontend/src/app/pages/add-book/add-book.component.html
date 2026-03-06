@@ -1,12 +1,17 @@
 <div class="wrapper">
   <div class="container">
     <h1>Add Book</h1>
-    <form class="add-book-form">
+    <form class="add-book-form" [formGroup]="this.addBookForm">
       <div class="info-inputs">
         <p-iftalabel>
           <p-iconfield>
             <p-inputicon styleClass="pi pi-book"></p-inputicon>
-            <input id="book-title" pInputText fluid="true" />
+            <input
+              id="book-title"
+              pInputText
+              fluid="true"
+              formControlName="title"
+            />
           </p-iconfield>
           <label for="book-title">Title</label>
         </p-iftalabel>
@@ -14,7 +19,12 @@
         <p-iftalabel>
           <p-iconfield>
             <p-inputicon styleClass="pi pi-user"></p-inputicon>
-            <input id="book-author" pInputText fluid="true" />
+            <input
+              id="book-author"
+              pInputText
+              fluid="true"
+              formControlName="author"
+            />
           </p-iconfield>
           <label for="book-author">Author</label>
         </p-iftalabel>
@@ -47,29 +57,49 @@
         <p-rating class="rating"></p-rating>
       </div>
       <div class="image-upload">
-        <p-fileupload
-          name="demo[]"
-          (onUpload)="onUpload($event)"
-          [multiple]="true"
-          accept="image/*"
-          maxFileSize="1000000"
-          mode="advanced"
-          fileLimit="3"
-        >
-          <ng-template #empty>
-            <div>Drag and drop files here to upload.</div>
-          </ng-template>
-          <ng-template #content>
-            @if (uploadedFiles.length) {
-              <ul>
-                @for (file of uploadedFiles; track $index) {
-                  <li>{{ file.name }} - {{ file.size }} bytes</li>
-                }
-              </ul>
-            }
-          </ng-template>
-        </p-fileupload>
-        <p-button label="Add Book"></p-button>
+        <div class="uploads">
+          <p-fileupload
+            name="eventImages[]"
+            (onUpload)="onUpload($event)"
+            [multiple]="true"
+            accept="image/*"
+            maxFileSize="1000000"
+            mode="advanced"
+            fileLimit="3"
+          >
+            <ng-template #empty>
+              <div>Drag and drop files here to upload.</div>
+            </ng-template>
+            <ng-template #content>
+              @if (uploadedFiles.length) {
+                <ul>
+                  @for (file of uploadedFiles; track $index) {
+                    <li>{{ file.name }} - {{ file.size }} bytes</li>
+                  }
+                </ul>
+              }
+            </ng-template>
+          </p-fileupload>
+
+          <div class="cover-image-upload">
+            <p-fileupload
+              mode="basic"
+              name="coverImages[]"
+              chooseIcon="pi pi-upload"
+              accept="image/*"
+              maxFileSize="1000000"
+              (onSelect)="onCoverUpload($event)"
+              [auto]="true"
+              chooseLabel="Browse"
+            />
+            <p class="cover-upload-label">Upload a cover image for your book</p>
+          </div>
+        </div>
+        <p-button
+          label="Add Book"
+          type="submit"
+          (onClick)="onSubmit()"
+        ></p-button>
       </div>
     </form>
   </div>
