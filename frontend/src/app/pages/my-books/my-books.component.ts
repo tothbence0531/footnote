@@ -5,9 +5,11 @@ import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { Book } from '../../models/book.model';
 import { environment } from '../../../environments/environment.dev';
+import { RouterLink } from '@angular/router';
+import { Button } from 'primeng/button';
 @Component({
   selector: 'app-my-books',
-  imports: [DragscrollDirective],
+  imports: [DragscrollDirective, RouterLink, Button],
   templateUrl: './my-books.component.html',
   styleUrl: './my-books.component.scss',
 })

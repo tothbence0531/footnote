@@ -37,4 +37,8 @@ export class BooksService {
       formData,
     );
   }
+
+  getBookWithEvents(id: string) {
+    return this.http.get<Book>(`${this.API_URL}/books/${id}`);
+  }
 }

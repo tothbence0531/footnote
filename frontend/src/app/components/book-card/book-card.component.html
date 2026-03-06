@@ -2,32 +2,42 @@
   <div class="book-card">
     <div class="left-col">
       <div class="book-card-image">
-        <img src="assets/fogosszar.webp" />
+        <img [src]="`${this.API_URL}${this.book()?.cover_image_url}`" />
       </div>
-      <p class="download-qr"><i class="pi pi-download"></i> Download QR code</p>
+      <p class="download-qr" (click)="downloadQrCode()">
+        <i class="pi pi-download"></i> Download QR code
+      </p>
     </div>
     <div class="middle-col">
-      <h2 class="book-title">The Shining</h2>
-      <h5 class="author">Stephen King</h5>
+      <h2 class="book-title">{{ this.book()?.title || "Loading..." }}</h2>
+      <h5 class="author">{{ this.book()?.author || "Loading..." }}</h5>
       <p-rating
         class="rating"
         readonly="true"
         stars="5"
-        [(ngModel)]="bookRating"
+        [ngModel]="ownerEvent()?.rating || 0"
       ></p-rating>
       <p class="description">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum, odit
-        voluptatem. Eaque inventore distinctio in, veritatis maxime porro quasi,
-        consequuntur unde illo, tempora sequi. Exercitationem quod reiciendis
-        facilis expedita sapiente.
+        {{ this.book()?.events?.at(0)?.description || "No description" }}
       </p>
-      <h4 class="readers"><i class="pi pi-book"></i> 10 Readers</h4>
+      <h4 class="readers">
+        <i class="pi pi-book"></i>
+        {{ this.book()?.events?.length || 0 }} Readers
+      </h4>
     </div>
 
     <div class="right-col">
-      <p class="book-owner"><i class="pi pi-user"></i> Janos</p>
-      <p class="location"><i class="pi pi-map-marker"></i> Hódmezővásárhely</p>
-      <p class="book-added-at"><i class="pi pi-calendar"></i> 2026.01.01</p>
+      <p class="book-owner">
+        <i class="pi pi-user"></i> {{ this.book()?.owner_name || "Unknown" }}
+      </p>
+      <p class="location">
+        <i class="pi pi-map-marker"></i>
+        {{ this.book()?.events?.at(0)?.location || "Unknown" }}
+      </p>
+      <p class="book-added-at">
+        <i class="pi pi-calendar"></i>
+        {{ this.book()?.created_at | date: "yyyy.MM.dd" }}
+      </p>
     </div>
   </div>
 </div>

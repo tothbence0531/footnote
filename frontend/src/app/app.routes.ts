@@ -14,6 +14,6 @@ export const routes: Routes = [
   { path: 'my-books', component: MyBooksComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'scan-qr', component: ScanQrComponent },
-  { path: 'book', component: BookDetailsComponent },
+  { path: 'book/:id', component: BookDetailsComponent },
   { path: '**', redirectTo: '' },
 ];

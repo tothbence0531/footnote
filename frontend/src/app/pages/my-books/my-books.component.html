@@ -15,6 +15,24 @@
             } @else {
               <p>{{ book.title }}</p>
             }
+            <div class="overlay">
+              <p-button
+                label="View"
+                icon="pi pi-search"
+                severity="secondary"
+                [routerLink]="`/book/${book.id}`"
+              ></p-button>
+              <p-button
+                label="Edit"
+                icon="pi pi-pencil"
+                severity="secondary"
+              ></p-button>
+              <p-button
+                label="Delete"
+                icon="pi pi-trash"
+                severity="danger"
+              ></p-button>
+            </div>
           </div>
         }
       </div>
@@ -36,7 +54,10 @@
         @for (book of this.readBooks(); track $index) {
           <div class="cover">
             @if (!book.imageError) {
-              <img (error)="onImageError(book)" [src]="book.cover_image_url" />
+              <img
+                (error)="onImageError(book)"
+                [src]="`${this.API_URL}${book.cover_image_url}`"
+              />
             } @else {
               <p>{{ book.title }}</p>
             }

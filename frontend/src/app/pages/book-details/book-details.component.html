@@ -3,18 +3,16 @@
     <h1>My Books</h1>
     <div class="tree">
       <div class="parent-row">
-        <app-book-card class="parent-card"></app-book-card>
+        <app-book-card class="parent-card" [book]="this.book()"></app-book-card>
       </div>
       <div class="children">
-        <div class="child">
-          <app-book-event-card class="child-card"></app-book-event-card>
-        </div>
-        <div class="child">
-          <app-book-event-card class="child-card"></app-book-event-card>
-        </div>
-        <div class="child">
-          <app-book-event-card class="child-card"></app-book-event-card>
-        </div>
+        @for (event of this.book()?.events; track $index) {
+          <div class="child">
+            <app-book-event-card class="child-card"></app-book-event-card>
+          </div>
+        }
+
+        <i class="pi pi-plus add-event"></i>
       </div>
     </div>
   </div>

@@ -4,7 +4,7 @@ $line-width: 0.15rem;
 $line-color: var(--p-surface-300);
 $child-margin: $spacingLarge;
 $child-padding: 2.5rem;
-$line-left: $child-padding/2;
+$line-left: calc($child-padding/2);
 $parent-child-gap: $spacingLarger;
 $media-mobile: $breakpoint-sm;
 
@@ -61,6 +61,34 @@ $media-mobile: $breakpoint-sm;
       width: $line-left;
       height: $line-width;
       background: $line-color;
+    }
+  }
+
+  .add-event {
+    background-color: var(--p-primary-300);
+    color: var(--p-primary-100);
+    border-radius: $borderRadiusMedium;
+    font-size: $fontSizeSmallest;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: -$line-left - 0.7rem;
+    transition: all 0.1s ease-in-out;
+    font-weight: 600;
+
+    &:hover {
+      background-color: var(--p-primary-200);
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+    }
+
+    &:active {
+      background-color: var(--p-primary-100);
+      color: var(--p-primary-200);
+      transition: all 0.1s ease-in-out;
     }
   }
 
