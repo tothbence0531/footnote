@@ -1,0 +1,23 @@
+@use "../../styles/index" as *;
+
+.wrapper {
+  p-dialog {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: $spacingMedium;
+      margin-top: $spacingSmall;
+
+      textarea {
+        resize: none;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: $spacingSmall;
+      margin-top: $spacingSmall;
+    }
+  }
+}

@@ -1,6 +1,5 @@
 <div class="wrapper">
   <div class="container">
-    <h1>My Books</h1>
     <div class="tree">
       <div class="parent-row">
         <app-book-card class="parent-card" [book]="this.book()"></app-book-card>
@@ -8,12 +7,24 @@
       <div class="children">
         @for (event of this.book()?.events; track $index) {
           <div class="child">
-            <app-book-event-card class="child-card"></app-book-event-card>
+            <app-book-event-card
+              [bookEvent]="event"
+              class="child-card"
+            ></app-book-event-card>
           </div>
         }
 
-        <i class="pi pi-plus add-event"></i>
+        <i
+          class="pi pi-plus add-event"
+          (click)="this.dialogService.showBookEvent()"
+        ></i>
       </div>
     </div>
   </div>
 </div>
+
+<app-book-event-form
+  [visible]="this.dialogService.bookEventVisible()"
+  (visibleChange)="this.dialogService.bookEventVisible.set($event)"
+  (onSubmit)="this.submitBookEvent($event)"
+></app-book-event-form>

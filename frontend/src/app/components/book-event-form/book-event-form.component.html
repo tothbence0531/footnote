@@ -1,0 +1,68 @@
+<div class="wrapper">
+  <p-dialog
+    header="Add event"
+    [modal]="true"
+    [draggable]="false"
+    [visible]="visible()"
+    (visibleChange)="visibleChange.emit($event)"
+    [closable]="true"
+    [dismissableMask]="true"
+    [style]="{ width: '30rem' }"
+  >
+    <form [formGroup]="this.addEventForm">
+      <p-floatlabel variant="on">
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-map" />
+          <input
+            formControlName="location"
+            name="location"
+            type="text"
+            pInputText
+            fluid="true"
+          />
+        </p-iconfield>
+        <label for="location ">Location</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on">
+        <textarea
+          formControlName="description"
+          name="description"
+          pTextarea
+          fluid="true"
+        ></textarea>
+        <label for="description">Description</label>
+      </p-floatlabel>
+      <p-rating name="rating" formControlName="rating"></p-rating>
+
+      <p-fileupload
+        name="eventImages[]"
+        (uploadHandler)="onImageUpload($event)"
+        [customUpload]="true"
+        [showUploadButton]="true"
+        [multiple]="true"
+        accept="image/*"
+        maxFileSize="1000000"
+        mode="advanced"
+        fileLimit="3"
+      >
+        <ng-template #empty>
+          <div>Drag and drop files here to upload.</div>
+        </ng-template>
+        <ng-template #content>
+          @if (uploadedFiles.length) {
+            <ul>
+              @for (file of uploadedFiles; track $index) {
+                <li>{{ file.name }} - {{ file.size }} bytes</li>
+              }
+            </ul>
+          }
+        </ng-template>
+      </p-fileupload>
+    </form>
+
+    <div class="buttons">
+      <p-button label="Cancel" severity="secondary" (click)="close()" />
+      <p-button label="Save" (click)="save()" />
+    </div>
+  </p-dialog>
+</div>

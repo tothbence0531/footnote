@@ -13,6 +13,7 @@
       flex-direction: column;
       justify-content: start;
       gap: $spacingSmall;
+      flex: 5;
 
       .event-info {
         display: flex;
@@ -29,6 +30,7 @@
     }
 
     .image-wrapper {
+      flex: 1;
       width: 70%;
 
       img {

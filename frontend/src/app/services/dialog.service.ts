@@ -6,6 +6,7 @@ import { Injectable, signal } from '@angular/core';
 export class DialogService {
   loginVisible = signal(false);
   signUpVisible = signal(false);
+  bookEventVisible = signal(false);
 
   constructor() {}
 
@@ -23,5 +24,13 @@ export class DialogService {
 
   hideSignUp() {
     this.signUpVisible.set(false);
+  }
+
+  showBookEvent() {
+    this.bookEventVisible.set(true);
+  }
+
+  hideBookEvent() {
+    this.bookEventVisible.set(false);
   }
 }
