@@ -18,6 +18,7 @@ import {
   getAccessToken,
 } from '../interceptors/auth.interceptor';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,10 @@ export class AuthService {
   private isInitializing = new BehaviorSubject<boolean>(true);
   public isInitializing$ = this.isInitializing.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {
     this.initializeAuth();
   }
 
@@ -95,10 +99,12 @@ export class AuthService {
         tap(() => {
           setAccessToken(null);
           this.currentUserSubject.next(null);
+          this.router.navigate(['/']);
         }),
         catchError((error) => {
           setAccessToken(null);
           this.currentUserSubject.next(null);
+          this.router.navigate(['/']);
           return of(undefined);
         }),
         map(() => undefined),
