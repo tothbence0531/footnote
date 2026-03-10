@@ -21,7 +21,20 @@
       </p>
     </div>
     <div class="image-wrapper">
-      <img src="assets/fogosszar.webp" />
+      <p-galleria
+        circular="true"
+        showThumbnails="false"
+        showIndicators="true"
+        [showIndicatorsOnItem]="true"
+        [value]="this.images()"
+      >
+        <ng-template #item let-item>
+          <img [src]="item.itemImageSrc" style="width: 100%" />
+        </ng-template>
+        <ng-template #thumbnail let-item>
+          <img [src]="item.thumbnailImageSrc" />
+        </ng-template>
+      </p-galleria>
     </div>
   </div>
 </div>

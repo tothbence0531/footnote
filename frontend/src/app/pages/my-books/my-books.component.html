@@ -22,15 +22,12 @@
                 severity="secondary"
                 [routerLink]="`/book/${book.id}`"
               ></p-button>
-              <p-button
-                label="Edit"
-                icon="pi pi-pencil"
-                severity="secondary"
-              ></p-button>
+
               <p-button
                 label="Delete"
                 icon="pi pi-trash"
                 severity="danger"
+                (onClick)="deleteBook(book)"
               ></p-button>
             </div>
           </div>
@@ -61,6 +58,14 @@
             } @else {
               <p>{{ book.title }}</p>
             }
+            <div class="overlay">
+              <p-button
+                label="View"
+                icon="pi pi-search"
+                severity="secondary"
+                [routerLink]="`/book/${book.id}`"
+              ></p-button>
+            </div>
           </div>
         }
       </div>

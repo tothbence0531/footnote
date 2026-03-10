@@ -44,7 +44,7 @@ export class BookDetailsComponent {
       .subscribe({
         next: (book) => {
           this.book.set(book);
-          console.log(this.book());
+          //console.log(this.book());
           if (!this.book) {
             this.toastService.error('Book not found');
             this.router.navigate(['/']);
@@ -63,7 +63,7 @@ export class BookDetailsComponent {
     this.authService.currentUser$.pipe(take(1)).subscribe({
       next: (user) => {
         if (!user || !user.userId) {
-          this.toastService.error('You must be logged in to add a book');
+          this.toastService.error('You must be logged in to add an event');
           return;
         }
 

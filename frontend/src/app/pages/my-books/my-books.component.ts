@@ -23,6 +23,10 @@ export class MyBooksComponent {
     private authService: AuthService,
     private toastService: ToastService,
   ) {
+    this.getOwnedBooksFromBackend();
+  }
+
+  getOwnedBooksFromBackend() {
     this.authService.currentUser$.subscribe({
       next: (user) => {
         if (user) {
@@ -40,5 +44,17 @@ export class MyBooksComponent {
 
   onImageError(book: any) {
     book.imageError = true;
+  }
+
+  deleteBook(book: Book) {
+    this.booksService.deleteBook(book.id).subscribe({
+      next: () => {
+        this.toastService.success('Book deleted');
+        this.getOwnedBooksFromBackend();
+      },
+      error: (error) => {
+        this.toastService.error(error.error?.error?.message ?? 'Error');
+      },
+    });
   }
 }

@@ -6,12 +6,14 @@
       </div>
       <div class="children">
         @for (event of this.book()?.events; track $index) {
-          <div class="child">
-            <app-book-event-card
-              [bookEvent]="event"
-              class="child-card"
-            ></app-book-event-card>
-          </div>
+          @if ($index !== 0) {
+            <div class="child">
+              <app-book-event-card
+                [bookEvent]="event"
+                class="child-card"
+              ></app-book-event-card>
+            </div>
+          }
         }
 
         <i

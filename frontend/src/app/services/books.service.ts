@@ -41,4 +41,8 @@ export class BooksService {
   getBookWithEvents(id: string) {
     return this.http.get<Book>(`${this.API_URL}/books/${id}`);
   }
+
+  deleteBook(id: string) {
+    return this.http.delete(`${this.API_URL}/books/${id}`);
+  }
 }

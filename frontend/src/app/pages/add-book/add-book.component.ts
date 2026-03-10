@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
@@ -15,10 +15,11 @@ import { RatingModule } from 'primeng/rating';
 import { TextareaModule } from 'primeng/textarea';
 import { BooksService } from '../../services/books.service';
 import { Book } from '../../models/book.model';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
+import { BookEventService } from '../../services/book-event.service';
 import { switchMap, take } from 'rxjs';
+import { BookEvent } from '../../models/book-event.model';
 
 @Component({
   selector: 'app-add-book',
@@ -32,7 +33,6 @@ import { switchMap, take } from 'rxjs';
     IconFieldModule,
     InputIcon,
     ButtonModule,
-    FormsModule,
     ReactiveFormsModule,
   ],
   templateUrl: './add-book.component.html',
@@ -41,19 +41,23 @@ import { switchMap, take } from 'rxjs';
 export class AddBookComponent {
   private fb = inject(FormBuilder);
 
-  uploadedFiles: any[] = [];
-  coverImage: any = null;
+  uploadedFiles: File[] = [];
+  coverImage: File | null = null;
   isSubmitting = false;
 
   constructor(
     private booksService: BooksService,
     private authService: AuthService,
     private toastService: ToastService,
+    private eventService: BookEventService,
   ) {}
 
   addBookForm = this.fb.group({
     title: ['', Validators.required],
     author: ['', Validators.required],
+    location: ['', Validators.required],
+    description: ['', Validators.required],
+    rating: [0, [Validators.required]],
   });
 
   onUpload(event: any) {
@@ -75,46 +79,62 @@ export class AddBookComponent {
       this.toastService.error('Please fill in all required fields');
       return;
     }
-
-    if (!this.authService.isLoggedIn()) {
-      this.toastService.error('You must be logged in to add a book');
-      return;
-    }
-
     if (!this.coverImage) {
       this.toastService.error('You must upload a cover image');
       return;
     }
+    if (!this.uploadedFiles.length || this.uploadedFiles.length > 3) {
+      this.toastService.error('Please upload 1-3 event images');
+      return;
+    }
+
+    if (this.addBookForm.value.rating === 0) {
+      this.toastService.error('Please provide a rating for the book');
+      return;
+    }
 
     this.isSubmitting = true;
+    const { location, description, rating } = this.addBookForm.value;
 
     this.authService.currentUser$
       .pipe(
         take(1),
         switchMap((user) => {
-          if (!user) {
-            this.toastService.error('You must be logged in to add a book');
-            throw new Error('You must be logged in to add a book');
-          }
+          if (!user) throw new Error('Not logged in');
 
           return this.booksService.uploadCoverImage(this.coverImage!).pipe(
             switchMap((uploadResult) => {
               const book: Book = {
-                ...(this.addBookForm.value as Book),
+                title: this.addBookForm.value.title!,
+                author: this.addBookForm.value.author!,
                 cover_image_url: uploadResult.coverUrl,
                 original_owner: user.userId,
-              };
-              return this.booksService.addOwnedBook(book);
+              } as Book;
+
+              return this.booksService.addOwnedBook(book).pipe(
+                switchMap((createdBook) => {
+                  return this.eventService.addEvent(
+                    {
+                      book_id: createdBook.id,
+                      location: location!,
+                      description: description!,
+                      rating: rating!,
+                    } as BookEvent,
+                    this.uploadedFiles,
+                  );
+                }),
+              );
             }),
           );
         }),
       )
       .subscribe({
         next: () => {
-          this.toastService.success('Book added successfully');
+          this.toastService.success('Book and first event added successfully!');
           this.isSubmitting = false;
           this.addBookForm.reset();
           this.coverImage = null;
+          this.uploadedFiles = [];
         },
         error: (error) => {
           this.toastService.error(

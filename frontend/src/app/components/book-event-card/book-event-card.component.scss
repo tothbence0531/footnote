@@ -14,28 +14,68 @@
       justify-content: start;
       gap: $spacingSmall;
       flex: 5;
+      min-width: 0;
 
       .event-info {
         display: flex;
         flex-direction: row;
         gap: $spacingSmall;
+        min-width: 0;
       }
       .rating {
         margin: $spacingSmall 0;
+        min-width: 0;
       }
 
       p {
         margin: 0;
+        min-width: 0;
+      }
+
+      .description {
+        overflow-wrap: break-word;
+        word-break: break-word;
+        min-width: 0;
       }
     }
 
     .image-wrapper {
-      flex: 1;
-      width: 70%;
+      flex: 2;
+      min-width: 0;
+
+      ::ng-deep .p-galleria {
+        width: 100%;
+
+        .p-galleria-item-wrapper,
+        .p-galleria-item {
+          width: 100%;
+        }
+      }
 
       img {
         width: 100%;
+        height: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: center;
+        display: block;
       }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-lg) {
+  .wrapper .book-event-card {
+    .image-wrapper {
+      flex: 4;
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-md) {
+  :host {
+    .wrapper .book-event-card {
+      flex-direction: column;
     }
   }
 }

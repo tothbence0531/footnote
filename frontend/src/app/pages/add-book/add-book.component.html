@@ -33,7 +33,12 @@
         <p-iftalabel>
           <p-iconfield>
             <p-inputicon styleClass="pi pi-map"></p-inputicon>
-            <input id="location" pInputText fluid="true" />
+            <input
+              id="location"
+              pInputText
+              fluid="true"
+              formControlName="location"
+            />
           </p-iconfield>
           <label for="location">Location</label>
         </p-iftalabel>
@@ -47,6 +52,7 @@
             rows="5"
             fluid="true"
             pTextarea
+            formControlName="description"
           ></textarea>
           <label for="description-textarea">Description</label>
         </p-iftalabel>
@@ -54,13 +60,14 @@
           >Tell your feelings about the story and it's meaning to you</small
         >
 
-        <p-rating class="rating"></p-rating>
+        <p-rating class="rating" formControlName="rating"></p-rating>
       </div>
       <div class="image-upload">
         <div class="uploads">
           <p-fileupload
             name="eventImages[]"
-            (onUpload)="onUpload($event)"
+            (uploadHandler)="onUpload($event)"
+            [customUpload]="true"
             [multiple]="true"
             accept="image/*"
             maxFileSize="1000000"
