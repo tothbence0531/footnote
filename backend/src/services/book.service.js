@@ -7,8 +7,7 @@ import {
   InvalidBookIdError,
   NotOwnerError,
 } from "../utils/bookErrors.js";
-
-import { me } from "../controllers/auth.controller.js";
+import { logActivity, ACTIVITY_TYPES } from "./activity.service.js";
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -37,6 +36,13 @@ export async function addBook(book) {
     throw new MissingBookDataError();
 
   const addedBook = await booksDao.createBook(book);
+
+  await logActivity({
+    user_id: addedBook.original_owner,
+    type: ACTIVITY_TYPES.BOOK_ADDED,
+    entity_id: addedBook.id,
+  });
+
   return addedBook;
 }
 

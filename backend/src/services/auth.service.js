@@ -8,6 +8,7 @@ import {
   InvalidRefreshTokenError,
   UserAlreadyExistsError,
 } from "../utils/authErrors.js";
+import { logActivity, ACTIVITY_TYPES } from "./activity.service.js";
 
 export async function register(email, password, username) {
   if (!email || !password || !username) throw new MissingCredentialsError();
@@ -20,7 +21,15 @@ export async function register(email, password, username) {
     throw new UserAlreadyExistsError("Username already taken");
 
   const passwordHash = await hashPassword(password);
-  return userDao.insertUser(email, username, passwordHash);
+  const newUser = await userDao.insertUser(email, username, passwordHash);
+
+  await logActivity({
+    user_id: newUser[0].id,
+    type: ACTIVITY_TYPES.USER_REGISTERED,
+    entity_id: newUser[0].id,
+  });
+
+  return newUser;
 }
 
 export async function login(email, password) {

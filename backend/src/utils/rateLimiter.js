@@ -1,8 +1,8 @@
 import rateLimit from "express-rate-limit";
 
 export const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: 3 * 60 * 1000,
+  max: 50,
   message: {
     success: false,
     error: {
@@ -13,7 +13,7 @@ export const generalLimiter = rateLimit({
 });
 
 export const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 1 * 60 * 1000,
   max: 5,
   skipSuccessfulRequests: true,
   message: {

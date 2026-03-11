@@ -11,7 +11,7 @@ import { authGuard } from './guards/auth.guard';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'add-book', component: AddBookComponent, canActivate: [authGuard] },
-  { path: 'discover', component: DiscoverComponent },
+  { path: 'discover', component: DiscoverComponent, canActivate: [authGuard] },
   { path: 'my-books', component: MyBooksComponent, canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: 'scan-qr', component: ScanQrComponent },

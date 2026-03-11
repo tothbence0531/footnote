@@ -7,6 +7,7 @@ import {
   BookNotFoundError,
   MissingBookDataError,
 } from "../utils/bookErrors.js";
+import { logActivity, ACTIVITY_TYPES } from "./activity.service.js";
 
 export async function addEvent(eventData, files) {
   const userExists = await userDao.selectUserById(eventData.user_id);
@@ -30,6 +31,12 @@ export async function addEvent(eventData, files) {
       eventDao.createEventImage(event.id, `/uploads/events/${file.filename}`),
     ),
   );
+
+  await logActivity({
+    user_id: event.user_id,
+    type: ACTIVITY_TYPES.EVENT_ADDED,
+    entity_id: event.id.toString(),
+  });
 
   return { ...event, images };
 }

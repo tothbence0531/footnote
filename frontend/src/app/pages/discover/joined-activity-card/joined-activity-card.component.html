@@ -1,0 +1,15 @@
+<div class="wrapper">
+  <div class="header">
+    <i class="pi pi-user-plus"></i>
+    <div class="data">
+      <p>{{ activity().username }} joined the community</p>
+      <p>{{ activity().created_at | date: "YYYY.MM.dd HH:mm" }}</p>
+    </div>
+  </div>
+  <div class="content">
+    <img src="assets/welcome.png" alt="" />
+    <h5 class="welcome-text">
+      Welcome to the FootNote community {{ activity().username }}!
+    </h5>
+  </div>
+</div>

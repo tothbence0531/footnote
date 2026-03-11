@@ -1,0 +1,51 @@
+@use "../../../styles/index" as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--p-primary-500);
+  border-radius: $borderRadiusSmall;
+  overflow: hidden;
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--p-primary-500);
+    i {
+      color: var(--p-primary-50);
+      background-color: var(--p-primary-500);
+      padding: calc($spacingSmall * 1.4);
+      font-size: $fontSizeMedium;
+    }
+
+    .data {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+      padding-inline: $spacingSmall;
+      p {
+        margin: 0;
+        color: var(--p-primary-50);
+        font-weight: 600;
+      }
+    }
+  }
+  .content {
+    padding: $spacingMedium;
+    background-color: var(--p-primary-200);
+    display: flex;
+    flex-direction: row;
+    gap: $spacingLarge;
+    cursor: pointer;
+    img {
+      max-width: 10rem;
+      max-height: 15rem;
+    }
+    .book-data {
+      display: flex;
+      flex-direction: column;
+      gap: $spacingSmall;
+    }
+  }
+}

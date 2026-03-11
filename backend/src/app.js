@@ -14,6 +14,7 @@ import {
 import { authLimiter, generalLimiter } from "./utils/rateLimiter.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import activityRoutes from "./routes/activity.routes.js";
 
 const app = express();
 
@@ -73,6 +74,7 @@ app.use("/api", eventRoutes);
 // INFO: API routes
 app.use("/api", bookRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/activity", activityRoutes);
 
 // INFO: health check
 app.get("/api/health", (req, res) => {

@@ -1,0 +1,19 @@
+<div class="wrapper">
+  <div class="header">
+    <i class="pi pi-plus"></i>
+    <div class="data">
+      <p>{{ activity().username }} uploaded a book</p>
+      <p>{{ activity().created_at | date: "YYYY.MM.dd HH:mm" }}</p>
+    </div>
+  </div>
+  <div class="content" routerLink="/book/{{ activity().book?.id }}">
+    <img
+      src="{{ this.API_URL }}{{ activity().book?.cover_image_url }}"
+      alt=""
+    />
+    <div class="book-data">
+      <h2>{{ activity().book?.title }}</h2>
+      <h4>{{ activity().book?.author }}</h4>
+    </div>
+  </div>
+</div>

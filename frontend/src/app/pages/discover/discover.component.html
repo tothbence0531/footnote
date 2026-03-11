@@ -1,1 +1,27 @@
-<p>discover works!</p>
+<div class="wrapper">
+  <div class="container">
+    <h2>Latest Activity</h2>
+    <hr />
+
+    @if (isLoading) {
+    } @else {
+      <div class="feed">
+        @for (activity of feed; track activity.id) {
+          @if (activity.type === "user_registered") {
+            <app-joined-activity-card
+              [activity]="activity"
+            ></app-joined-activity-card>
+          } @else if (activity.type === "book_added") {
+            <app-addbook-activity-card
+              [activity]="activity"
+            ></app-addbook-activity-card>
+          } @else if (activity.type === "event_added") {
+            <app-addevent-activity-card
+              [activity]="activity"
+            ></app-addevent-activity-card>
+          }
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -1,90 +1,94 @@
-<div class="wrapper container">
-  @if (this.ownedBooks().length > 0) {
-    <h2>Books you uploaded</h2>
-    <hr />
+<div class="wrapper">
+  <div class="container">
+    @if (this.ownedBooks().length > 0) {
+      <h2>Books you uploaded</h2>
+      <hr />
 
-    <section class="owner shelf">
-      <div class="covers" appDragscroll>
-        @for (book of this.ownedBooks(); track $index) {
-          <div class="cover">
-            @if (!book.imageError) {
-              <img
-                (error)="onImageError(book)"
-                [src]="`${this.API_URL}${book.cover_image_url}`"
-              />
-            } @else {
-              <p>{{ book.title }}</p>
-            }
-            <div class="overlay">
-              <p-button
-                label="View"
-                icon="pi pi-search"
-                severity="secondary"
-                [routerLink]="`/book/${book.id}`"
-              ></p-button>
+      <section class="owner shelf">
+        <div class="covers" appDragscroll>
+          @for (book of this.ownedBooks(); track $index) {
+            <div class="cover">
+              @if (!book.imageError) {
+                <img
+                  (error)="onImageError(book)"
+                  [src]="`${this.API_URL}${book.cover_image_url}`"
+                />
+              } @else {
+                <p>{{ book.title }}</p>
+              }
+              <div class="overlay">
+                <p-button
+                  label="View"
+                  icon="pi pi-search"
+                  severity="secondary"
+                  [routerLink]="`/book/${book.id}`"
+                ></p-button>
 
-              <p-button
-                label="Delete"
-                icon="pi pi-trash"
-                severity="danger"
-                (onClick)="deleteBook(book)"
-              ></p-button>
+                <p-button
+                  label="Delete"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  (onClick)="deleteBook(book)"
+                ></p-button>
+              </div>
             </div>
+          }
+        </div>
+        <div class="titles">
+          <div class="flower left">
+            <img src="assets/flower_pot_2.png" alt="flower" />
           </div>
-        }
-      </div>
-      <div class="titles">
-        @for (book of this.ownedBooks(); track $index) {
-          <div class="title">
-            <h5>{{ book.title }}</h5>
+          <div class="flower right">
+            <img src="assets/flower_pot_5.png" alt="flower" />
           </div>
-        }
-      </div>
-    </section>
-  }
+        </div>
+      </section>
+    }
 
-  @if (this.readBooks().length > 0) {
-    <h2>Books you found</h2>
-    <hr />
-    <section class="finder shelf">
-      <div class="covers" appDragscroll>
-        @for (book of this.readBooks(); track $index) {
-          <div class="cover">
-            @if (!book.imageError) {
-              <img
-                (error)="onImageError(book)"
-                [src]="`${this.API_URL}${book.cover_image_url}`"
-              />
-            } @else {
-              <p>{{ book.title }}</p>
-            }
-            <div class="overlay">
-              <p-button
-                label="View"
-                icon="pi pi-search"
-                severity="secondary"
-                [routerLink]="`/book/${book.id}`"
-              ></p-button>
+    @if (this.readBooks().length > 0) {
+      <h2>Books you found</h2>
+      <hr />
+      <section class="finder shelf">
+        <div class="covers" appDragscroll>
+          @for (book of this.readBooks(); track $index) {
+            <div class="cover">
+              @if (!book.imageError) {
+                <img
+                  (error)="onImageError(book)"
+                  [src]="`${this.API_URL}${book.cover_image_url}`"
+                />
+              } @else {
+                <p>{{ book.title }}</p>
+              }
+              <div class="overlay">
+                <p-button
+                  label="View"
+                  icon="pi pi-search"
+                  severity="secondary"
+                  [routerLink]="`/book/${book.id}`"
+                ></p-button>
+              </div>
             </div>
+          }
+        </div>
+        <div class="titles">
+          <div class="flower left">
+            <img src="assets/flower_pot_4.png" alt="flower" />
           </div>
-        }
-      </div>
-      <div class="titles">
-        @for (book of this.readBooks(); track $index) {
-          <div class="title">
-            <h5>{{ book.title }}</h5>
+          <div class="flower right">
+            <img src="assets/flower_pot_3.png" alt="flower" />
           </div>
-        }
-      </div>
-    </section>
-  }
+        </div>
+      </section>
+    }
 
-  @if (this.ownedBooks().length == 0 && this.readBooks().length == 0) {
-    <h2>You haven't uploaded or found any books yet</h2>
-    <hr />
-    <p class="text-center">
-      Upload your first book by clicking the plus button on the top right corner
-      of the screen.
-    </p>
-  }
+    @if (this.ownedBooks().length == 0 && this.readBooks().length == 0) {
+      <h2>You haven't uploaded or found any books yet</h2>
+      <hr />
+      <p class="text-center">
+        Upload your first book by clicking the plus button on the top right
+        corner of the screen.
+      </p>
+    }
+  </div>
 </div>

@@ -1,0 +1,21 @@
+@use "../../styles/index" as *;
+
+.wrapper {
+  background-color: var(--p-primary-100);
+  min-height: 100vh;
+  padding-block: $pageTopMargin;
+
+  .feed {
+    display: flex;
+    flex-direction: column;
+    gap: $spacingLarge;
+  }
+
+  h2 {
+    text-align: center;
+  }
+  hr {
+    width: 10rem;
+    margin-bottom: $spacingMedium;
+  }
+}

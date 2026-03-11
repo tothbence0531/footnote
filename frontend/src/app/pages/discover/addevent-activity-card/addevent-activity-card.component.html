@@ -1,0 +1,34 @@
+<div class="wrapper">
+  <div class="header">
+    <i class="pi pi-plus"></i>
+    <div class="data">
+      <p>
+        {{ activity().username }} added an event to
+        {{ activity().event?.book_title }}
+      </p>
+      <p>{{ activity().created_at | date: "YYYY.MM.dd HH:mm" }}</p>
+    </div>
+  </div>
+  <div class="content" routerLink="/book/{{ activity().event?.book_id }}">
+    <div class="data-container">
+      <img src="{{ this.API_URL }}{{ activity().event?.book_cover }}" alt="" />
+      <div class="book-data">
+        <h2 class="book-title">{{ activity().event?.book_title }}</h2>
+        <h4 class="location">
+          <i class="pi pi-map-marker"> </i> {{ activity().event?.location }}
+        </h4>
+        <p-rating
+          [ngModel]="activity().event?.rating"
+          readonly="true"
+        ></p-rating>
+        <p class="description">{{ activity().event?.description }}</p>
+      </div>
+    </div>
+    <h4 class="event-images-title">Event Images</h4>
+    <div class="event-images" appDragscroll>
+      @for (image of activity().event?.images; track $index) {
+        <img src="{{ this.API_URL }}{{ image.image_url }}" alt="" />
+      }
+    </div>
+  </div>
+</div>

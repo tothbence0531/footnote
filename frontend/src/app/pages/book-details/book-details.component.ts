@@ -38,8 +38,12 @@ export class BookDetailsComponent {
       return;
     }
 
+    this.getBookWithEvents(this.bookId);
+  }
+
+  getBookWithEvents(bookId: string) {
     this.booksService
-      .getBookWithEvents(this.bookId)
+      .getBookWithEvents(bookId)
       .pipe(take(1))
       .subscribe({
         next: (book) => {
@@ -87,7 +91,15 @@ export class BookDetailsComponent {
           .addEvent(bookEvent, event.files)
           .pipe(take(1))
           .subscribe({
-            next: (event) => this.toastService.success('Event added!'),
+            next: (event) => {
+              this.toastService.success('Event added!');
+              if (!this.bookId) {
+                this.toastService.error('No book id provided');
+                this.router.navigate(['/']);
+                return;
+              }
+              this.getBookWithEvents(this.bookId);
+            },
             error: (err) =>
               this.toastService.error(err.error?.error?.message ?? 'Error'),
           });
