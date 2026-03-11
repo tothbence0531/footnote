@@ -8,7 +8,7 @@ export class InvalidCredentialsError extends AppError {
 
 export class MissingCredentialsError extends AppError {
   constructor(message = "All fields are required") {
-    super(message, 401, "MISSING_CREDENTIALS");
+    super(message, 400, "MISSING_CREDENTIALS");
   }
 }
 
@@ -26,6 +26,6 @@ export class UserAlreadyExistsError extends AppError {
 
 export class UserNotFoundError extends AppError {
   constructor(message = "User not found") {
-    super(message, 401, "USER_NOT_FOUND");
+    super(message, 404, "USER_NOT_FOUND");
   }
 }

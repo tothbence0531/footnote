@@ -78,4 +78,13 @@
       </div>
     </section>
   }
+
+  @if (this.ownedBooks().length == 0 && this.readBooks().length == 0) {
+    <h2>You haven't uploaded or found any books yet</h2>
+    <hr />
+    <p class="text-center">
+      Upload your first book by clicking the plus button on the top right corner
+      of the screen.
+    </p>
+  }
 </div>

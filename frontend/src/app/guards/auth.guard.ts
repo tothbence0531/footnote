@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { map, take } from 'rxjs';
+import { filter, switchMap, map, take } from 'rxjs';
 import { ToastService } from '../services/toast.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
@@ -9,10 +9,13 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const toastService = inject(ToastService);
 
-  return authService.currentUser$.pipe(
+  return authService.isInitializing$.pipe(
+    filter((isInitializing) => !isInitializing),
     take(1),
-    map((isAuthenticated) => {
-      if (isAuthenticated) {
+    switchMap(() => authService.currentUser$),
+    take(1),
+    map((user) => {
+      if (user) {
         return true;
       }
 

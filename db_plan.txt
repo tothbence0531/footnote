@@ -1,0 +1,62 @@
+users (id, email, username, password_hash, points, created_at)
+books (id, title, author, original_owner, cover_image_url, created_at)
+book_events (id, book_id, user_id, location, description, rating, created_at)
+event_images (id, event_id, image_url)
+badges (id, image_url, name)
+user_badges (id, user_id, badge_id, obtained_at)
+
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    points INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE refresh_tokens (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    token TEXT NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE books (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    original_owner UUID REFERENCES users(id) ON DELETE SET NULL,
+    cover_image_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE book_events (
+    id SERIAL PRIMARY KEY,
+    book_id UUID REFERENCES books(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    location VARCHAR(255),
+    description TEXT,
+    rating INT CHECK (rating >= 0 AND rating <= 5),
+    hash VARCHAR(64) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE event_images (
+    id SERIAL PRIMARY KEY,
+    event_id INT REFERENCES book_events(id) ON DELETE CASCADE,
+    image_url TEXT NOT NULL
+);
+
+CREATE TABLE badges (
+    id SERIAL PRIMARY KEY,
+    image_url TEXT NOT NULL,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE user_badges (
+    id SERIAL PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    badge_id INT REFERENCES badges(id) ON DELETE CASCADE,
+    obtained_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

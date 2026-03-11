@@ -6,13 +6,20 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import bookRoutes from "./routes/book.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import eventRoutes from "./routes/event.routes.js";
 import {
   errorMiddleware,
   notFoundHandler,
 } from "./middlewares/error.middleware.js";
 import { authLimiter, generalLimiter } from "./utils/rateLimiter.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
+
+// INFO: files and folders for static assets
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // INFO: security middlewares
 app.use(helmet());
@@ -41,6 +48,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", generalLimiter);
 app.use("/api/auth/login", authLimiter);
 app.use("/api/auth/register", authLimiter);
+
+// INFO: static assets
+app.use(
+  "/api/uploads",
+  (req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  },
+  express.static(path.join(__dirname, "../uploads")),
+);
+
+app.use(
+  "/api/uploads/events",
+  (req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  },
+  express.static(path.join(__dirname, "../uploads/events")),
+);
+
+app.use("/api", eventRoutes);
 
 // INFO: API routes
 app.use("/api", bookRoutes);
