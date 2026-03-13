@@ -2,7 +2,6 @@ import { Component, DestroyRef, effect, inject, OnInit } from '@angular/core';
 import { ActivityService } from '../../services/activity.service';
 import { Activity } from '../../models/activity.model';
 import { RouterModule } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { take } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -16,7 +15,6 @@ import { JoinedActivityCardComponent } from './joined-activity-card/joined-activ
   selector: 'app-discover',
   imports: [
     RouterModule,
-    DatePipe,
     RatingModule,
     FormsModule,
     AddbookActivityCardComponent,

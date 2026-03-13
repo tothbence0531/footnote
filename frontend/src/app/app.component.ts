@@ -8,6 +8,7 @@ import { AuthService } from './services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ToastService } from './services/toast.service';
 import { ToastModule } from 'primeng/toast';
+import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { ToastModule } from 'primeng/toast';
     LoginDialogComponent,
     SignupDialogComponent,
     ToastModule,
+    FooterComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

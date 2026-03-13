@@ -1,0 +1,75 @@
+@use "../../styles/index" as *;
+
+footer {
+  background-color: var(--p-primary-600);
+  padding: $spacingLarge;
+  color: var(--p-primary-100);
+  font-weight: 500;
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .logo {
+      user-select: none;
+      h1 {
+        margin: 0;
+      }
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        padding-bottom: $spacingSmall;
+      }
+    }
+
+    .links {
+      ul {
+        li {
+          transition: $transitionFast;
+          &:hover {
+            cursor: pointer;
+            color: var(--p-primary-50);
+            transition: $transitionFast;
+          }
+
+          &:active {
+            color: var(--p-primary-200);
+            transition: $transitionFast;
+          }
+        }
+      }
+    }
+
+    .copyright {
+      .dev {
+        text-decoration: none;
+        font-weight: 600;
+        padding: $spacingSmallest;
+        border-radius: $borderRadiusMedium;
+        color: var(--p-primary-600);
+        background-color: var(--p-primary-100);
+        transition: $transitionFast;
+        text-wrap: nowrap;
+
+        &:hover {
+          cursor: pointer;
+          color: var(--p-primary-100);
+          background-color: var(--p-primary-600);
+          transition: $transitionFast;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint-md) {
+  footer {
+    .container {
+      flex-direction: column;
+    }
+  }
+}

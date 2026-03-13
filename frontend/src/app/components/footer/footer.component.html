@@ -1,0 +1,39 @@
+<footer>
+  <div class="container">
+    <section class="logo">
+      <h1>FootNote</h1>
+      <p>View your book's history</p>
+    </section>
+    <section class="links">
+      <ul>
+        <li routerLink="/">
+          <i class="pi pi-home"></i>
+          Home
+        </li>
+        <li routerLink="/add-book">
+          <i class="pi pi-plus-circle"></i>
+          Add book
+        </li>
+        <li routerLink="/discover">
+          <i class="pi pi-compass"></i>
+          Discover
+        </li>
+        <li routerLink="/my-books">
+          <i class="pi pi-bookmark"></i>
+          My books
+        </li>
+      </ul>
+    </section>
+    <section class="copyright">
+      <ul>
+        <li>
+          SZTE PTI BSc Thesis Project by
+          <a href="https://github.com/tothbence0531" target="_blank" class="dev"
+            ><i class="pi pi-github"></i> Tóth Bence
+          </a>
+        </li>
+        <li>Copyright © {{ this.getYear() }} FootNote</li>
+      </ul>
+    </section>
+  </div>
+</footer>

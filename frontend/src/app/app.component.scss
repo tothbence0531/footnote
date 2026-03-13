@@ -2,9 +2,11 @@
 
 .app-wrapper {
   padding-top: $pageTopMargin;
+  min-height: 100vh;
 }
 
 .qr-code {
+  z-index: 2;
   position: fixed;
   bottom: 1rem;
   right: 1rem;
