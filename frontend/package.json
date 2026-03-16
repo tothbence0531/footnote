@@ -20,6 +20,7 @@
     "@angular/router": "^19.2.0",
     "@primeng/themes": "^21.0.3",
     "bootstrap": "^5.3.8",
+    "ethers": "^6.16.0",
     "primeicons": "^7.0.0",
     "primeng": "^19.1.4",
     "qrcode": "^1.5.4",

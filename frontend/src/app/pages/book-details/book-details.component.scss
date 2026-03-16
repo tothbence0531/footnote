@@ -15,6 +15,71 @@ $media-mobile: $breakpoint-sm;
     position: relative;
   }
 
+  .verification-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+
+    border-radius: 100%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--p-yellow-500);
+    color: var(--p-yellow-50);
+
+    i {
+      font-size: 0.9rem;
+    }
+
+    &.first-event-badge {
+      top: calc(
+        0.5rem + 1.5rem + 0.2rem
+      ); // base top + height of verified badge + margin
+
+      &.verified {
+        background-color: var(--p-blue-500);
+        color: var(--p-blue-50);
+      }
+
+      &.tampered {
+        background-color: var(--p-red-500);
+        color: var(--p-red-50);
+      }
+
+      &.not_on_chain {
+        background-color: var(--p-red-500);
+        color: var(--p-red-50);
+      }
+
+      &.pending {
+        background-color: var(--p-yellow-500);
+        color: var(--p-yellow-50);
+      }
+    }
+
+    &.verified {
+      background-color: var(--p-green-500);
+      color: var(--p-green-50);
+    }
+
+    &.tampered {
+      background-color: var(--p-red-500);
+      color: var(--p-red-50);
+    }
+
+    &.not_on_chain {
+      background-color: var(--p-red-500);
+      color: var(--p-red-50);
+    }
+
+    &.pending {
+      background-color: var(--p-yellow-500);
+      color: var(--p-yellow-50);
+    }
+  }
+
   .parent-row {
     position: relative;
 

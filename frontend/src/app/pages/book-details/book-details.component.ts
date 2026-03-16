@@ -11,16 +11,29 @@ import { DialogService } from '../../services/dialog.service';
 import { BookEvent } from '../../models/book-event.model';
 import { AuthService } from '../../services/auth.service';
 import { BookEventService } from '../../services/book-event.service';
+import { TooltipModule } from 'primeng/tooltip';
+import {
+  VerificationService,
+  VerificationStatus,
+} from '../../services/verification.service';
 
 @Component({
   selector: 'app-book-details',
-  imports: [BookCardComponent, BookEventCardComponent, BookEventFormComponent],
+  imports: [
+    BookCardComponent,
+    BookEventCardComponent,
+    BookEventFormComponent,
+    TooltipModule,
+  ],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.scss',
 })
 export class BookDetailsComponent {
   bookId: string | null = null;
   book = signal<Book | null>(null);
+
+  bookVerification = signal<VerificationStatus>('pending');
+  eventVerifications = signal<Map<string, VerificationStatus>>(new Map());
 
   constructor(
     public dialogService: DialogService,
@@ -30,6 +43,7 @@ export class BookDetailsComponent {
     private booksService: BooksService,
     private authService: AuthService,
     private eventService: BookEventService,
+    private verificationService: VerificationService,
   ) {
     this.bookId = this.route.snapshot.paramMap.get('id');
     if (!this.bookId) {
@@ -53,6 +67,7 @@ export class BookDetailsComponent {
             this.toastService.error('Book not found');
             this.router.navigate(['/']);
           }
+          this.verifyBookAndEvents(book);
         },
         error: (error) => {
           this.toastService.error(
@@ -61,6 +76,24 @@ export class BookDetailsComponent {
           this.router.navigate(['/']);
         },
       });
+  }
+
+  private async verifyBookAndEvents(book: Book) {
+    const bookStatus = await this.verificationService.verifyBook(book);
+    this.bookVerification.set(bookStatus);
+
+    if (book.events?.length) {
+      const map = new Map<string, VerificationStatus>();
+      await Promise.all(
+        book.events.map(async (event: BookEvent) => {
+          const status = await this.verificationService.verifyEvent(
+            event.hash!,
+          );
+          map.set(event.id!, status);
+        }),
+      );
+      this.eventVerifications.set(map);
+    }
   }
 
   submitBookEvent(event: { event: BookEvent; files: File[] }) {

@@ -7,15 +7,15 @@
     } @else {
       <div class="feed">
         @for (activity of feed; track activity.id) {
-          @if (activity.type === "user_registered") {
+          @if (activity.type === "user_registered" && activity.username) {
             <app-joined-activity-card
               [activity]="activity"
             ></app-joined-activity-card>
-          } @else if (activity.type === "book_added") {
+          } @else if (activity.type === "book_added" && activity.book?.id) {
             <app-addbook-activity-card
               [activity]="activity"
             ></app-addbook-activity-card>
-          } @else if (activity.type === "event_added") {
+          } @else if (activity.type === "event_added" && activity.event?.id) {
             <app-addevent-activity-card
               [activity]="activity"
             ></app-addevent-activity-card>

@@ -8,6 +8,7 @@ import {
   MissingBookDataError,
 } from "../utils/bookErrors.js";
 import { logActivity, ACTIVITY_TYPES } from "./activity.service.js";
+import { logEventOnChain } from "./blockchain.service.js";
 
 export async function addEvent(eventData, files) {
   const userExists = await userDao.selectUserById(eventData.user_id);
@@ -37,6 +38,15 @@ export async function addEvent(eventData, files) {
     type: ACTIVITY_TYPES.EVENT_ADDED,
     entity_id: event.id.toString(),
   });
+
+  logEventOnChain(eventData.book_id, hash, eventData.wallet_address ?? null)
+    .then(async (txHash) => {
+      await eventDao.updateEventChainTx(event.id, txHash);
+      console.log(`Event ${event.id} logged on chain: ${txHash}`);
+    })
+    .catch((err) => {
+      console.error(`Chain log failed for event ${event.id}:`, err);
+    });
 
   return { ...event, images };
 }

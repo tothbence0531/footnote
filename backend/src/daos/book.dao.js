@@ -83,3 +83,10 @@ export const deleteBookById = async (id) => {
   const result = await db.query("DELETE FROM books WHERE id = $1", [id]);
   return result.rowCount;
 };
+
+export const updateBookChainTx = async (id, txHash) => {
+  await db.query("UPDATE books SET chain_tx_hash = $1 WHERE id = $2", [
+    txHash,
+    id,
+  ]);
+};

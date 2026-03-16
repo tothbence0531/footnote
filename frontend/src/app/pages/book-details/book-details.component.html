@@ -3,6 +3,42 @@
     <div class="tree">
       <div class="parent-row">
         <app-book-card class="parent-card" [book]="this.book()"></app-book-card>
+        <div class="verification-badge" [class]="bookVerification()">
+          @switch (bookVerification()) {
+            @case ("verified") {
+              <i pTooltip="Book verified on chain" class="pi pi-verified"></i>
+            }
+            @case ("tampered") {
+              <i
+                pTooltip="Book data has been tampered with"
+                class="pi pi-exclamation-triangle"
+              ></i>
+            }
+            @case ("not_on_chain") {
+              <i pTooltip="Book not on chain" class="pi pi-ban"></i>
+            }
+            @default {
+              <i pTooltip="No info on chain" class="pi pi-question-circle"></i>
+            }
+          }
+        </div>
+
+        <div
+          [class]="eventVerifications().get(this.book()?.events?.at(0)?.id!)"
+          class="first-event-badge verification-badge"
+        >
+          @switch (eventVerifications().get(this.book()?.events?.at(0)?.id!)) {
+            @case ("verified") {
+              <i pTooltip="Event verified on chain" class="pi pi-verified"></i>
+            }
+            @case ("not_on_chain") {
+              <i pTooltip="Event not on chain" class="pi pi-ban"></i>
+            }
+            @default {
+              <i pTooltip="No info on chain" class="pi pi-question-circle"></i>
+            }
+          }
+        </div>
       </div>
       <div class="children">
         @for (event of this.book()?.events; track $index) {
@@ -12,6 +48,28 @@
                 [bookEvent]="event"
                 class="child-card"
               ></app-book-event-card>
+              <div
+                class="verification-badge"
+                [class]="eventVerifications().get(event.id!)"
+              >
+                @switch (eventVerifications().get(event.id!)) {
+                  @case ("verified") {
+                    <i
+                      pTooltip="Event verified on chain"
+                      class="pi pi-verified"
+                    ></i>
+                  }
+                  @case ("not_on_chain") {
+                    <i pTooltip="Event not on chain" class="pi pi-ban"></i>
+                  }
+                  @default {
+                    <i
+                      pTooltip="No info on chain"
+                      class="pi pi-question-circle"
+                    ></i>
+                  }
+                }
+              </div>
             </div>
           }
         }

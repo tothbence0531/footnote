@@ -23,3 +23,10 @@ export const createEventImage = async (eventId, imageUrl) => {
   );
   return result.rows[0];
 };
+
+export const updateEventChainTx = async (id, txHash) => {
+  await db.query("UPDATE book_events SET chain_tx_hash = $1 WHERE id = $2", [
+    txHash,
+    id,
+  ]);
+};
