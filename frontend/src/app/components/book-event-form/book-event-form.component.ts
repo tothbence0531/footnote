@@ -112,8 +112,7 @@ export class BookEventFormComponent {
           .join('');
 
         const nonce = await this.web3Service.getNonce(
-          environment.contractAddress,
-          NONCE_ABI,
+          this.web3Service.walletAddress()!,
         );
 
         const signature = await this.web3Service.signBookEvent(

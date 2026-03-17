@@ -14,25 +14,6 @@ import {
 } from "./blockchain.service.js";
 
 export async function addEvent(eventData, files) {
-  console.log("=== EVENT DEBUG ===");
-  console.log("book_id:", eventData.book_id);
-  console.log("user_id:", eventData.user_id);
-  console.log("description:", eventData.description);
-  console.log("location:", eventData.location);
-  console.log("rating:", eventData.rating);
-  console.log("created_at:", eventData.created_at);
-  console.log("wallet_address:", eventData.wallet_address);
-  console.log("signature:", eventData.signature);
-
-  const h_createdAt = eventData.created_at ?? new Date().toISOString();
-
-  const hashInput = `${eventData.book_id}::${eventData.user_id}::${eventData.description}::${eventData.location}::${eventData.rating}::${h_createdAt}`;
-  console.log("hashInput:", hashInput);
-
-  const h_hash = crypto.createHash("sha256").update(hashInput).digest("hex");
-  console.log("computed hash:", h_hash);
-  console.log("==================");
-
   const userExists = await userDao.selectUserById(eventData.user_id);
   if (!userExists) throw new UserNotFoundError();
 
@@ -74,9 +55,7 @@ export async function addEvent(eventData, files) {
     await new Promise((resolve) => setTimeout(resolve, 3000));
   }
 
-  console.log("Waiting for book registration...");
   const isRegistered = await waitForBookRegistration(eventData.book_id);
-  console.log("Book registered on chain:", isRegistered);
   if (!isRegistered) {
     console.error(
       `Book ${eventData.book_id} not registered on chain, skipping event log`,
@@ -90,7 +69,6 @@ export async function addEvent(eventData, files) {
         eventData.signature ?? null,
       );
       await eventDao.updateEventChainTx(event.id, txHash);
-      console.log(`Event ${event.id} logged on chain: ${txHash}`);
     } catch (err) {
       console.error(`Chain log failed for event ${event.id}:`, err);
     }

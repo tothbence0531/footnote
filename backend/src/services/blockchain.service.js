@@ -61,8 +61,11 @@ export async function waitForBookRegistration(bookUuid, maxRetries = 10) {
   for (let i = 0; i < maxRetries; i++) {
     const isRegistered = await contract.isBookRegistered(bookId);
     if (isRegistered) return true;
-    console.log(`Waiting for book registration... attempt ${i + 1}`);
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
   return false;
+}
+
+export async function getOnChainNonce(walletAddress) {
+  return Number(await contract.nonces(walletAddress));
 }

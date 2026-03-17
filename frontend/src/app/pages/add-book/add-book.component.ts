@@ -239,9 +239,9 @@ export class AddBookComponent {
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
 
-    const nonce = await this.web3Service.getNonce(environment.contractAddress, [
-      'function nonces(address) view returns (uint256)',
-    ]);
+    const nonce = await this.web3Service.getNonce(
+      this.web3Service.walletAddress()!,
+    );
 
     const signature = await this.web3Service.signBookEvent(
       createdBook.id!,

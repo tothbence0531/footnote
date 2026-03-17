@@ -51,7 +51,6 @@ export async function addBook(book) {
       addedBook.author,
     );
     await booksDao.updateBookChainTx(addedBook.id, txHash);
-    console.log(`Book ${addedBook.id} registered on chain: ${txHash}`);
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
   } catch (err) {

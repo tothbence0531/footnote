@@ -74,6 +74,19 @@ export class Web3Service {
   ): Promise<string> {
     if (!this.signer) throw new Error('Wallet not connected');
 
+    console.log('signBookEvent nonce:', nonce, typeof nonce);
+
+    if (nonce === undefined || nonce === null) {
+      throw new Error('Cannot get nonce');
+    }
+
+    const value = {
+      bookId: ethers.keccak256(ethers.toUtf8Bytes(bookId)) as `0x${string}`,
+      eventHash: `0x${eventHash}` as `0x${string}`,
+      signer: await this.signer.getAddress(),
+      nonce: BigInt(nonce),
+    };
+
     const domain = {
       name: 'BookTracker',
       version: '1',
@@ -90,13 +103,6 @@ export class Web3Service {
       ],
     };
 
-    const value = {
-      bookId: ethers.keccak256(ethers.toUtf8Bytes(bookId)) as `0x${string}`,
-      eventHash: `0x${eventHash}` as `0x${string}`,
-      signer: await this.signer.getAddress(),
-      nonce: BigInt(nonce),
-    };
-
     return await this.signer.signTypedData(domain, types, value);
   }
 
@@ -104,13 +110,13 @@ export class Web3Service {
     return this.signer ? await this.signer.getAddress() : null;
   }
 
-  async getNonce(contractAddress: string, abi: any[]): Promise<number> {
-    if (!this.provider) throw new Error('Provider not initialized');
-    const contract = new ethers.Contract(contractAddress, abi, this.provider);
-    const address = await this.getAddress();
-    if (!address) throw new Error('No wallet address');
-    const nonce = await contract['nonces'](address);
-    return Number(nonce);
+  async getNonce(walletAddress: string): Promise<number> {
+    const response = await fetch(
+      `${environment.apiUrl}/blockchain/nonce/${walletAddress}`,
+    );
+    console.log(`${environment.apiUrl}/blockchain/nonce/${walletAddress}`);
+    const data = await response.json();
+    return data.nonce;
   }
 
   async signBookRegistration(

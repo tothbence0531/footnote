@@ -15,6 +15,8 @@ import { authLimiter, generalLimiter } from "./utils/rateLimiter.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import activityRoutes from "./routes/activity.routes.js";
+import { getOnChainNonce } from "./services/blockchain.service.js";
+import { authMiddleware } from "./middlewares/auth.middleware.js";
 
 const app = express();
 
@@ -79,6 +81,16 @@ app.use("/api/activity", activityRoutes);
 // INFO: health check
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// INFO: blockchain routes
+app.get("/api/blockchain/nonce/:address", async (req, res, next) => {
+  try {
+    const nonce = await getOnChainNonce(req.params.address);
+    res.json({ nonce });
+  } catch (err) {
+    next(err);
+  }
 });
 
 // INFO: error handling
