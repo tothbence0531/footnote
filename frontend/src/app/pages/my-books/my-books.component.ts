@@ -47,7 +47,7 @@ export class MyBooksComponent {
   }
 
   deleteBook(book: Book) {
-    this.booksService.deleteBook(book.id).subscribe({
+    this.booksService.deleteBook(book.id!).subscribe({
       next: () => {
         this.toastService.success('Book deleted');
         this.getOwnedBooksFromBackend();

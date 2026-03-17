@@ -105,9 +105,10 @@
         </div>
         <p-button
           label="Add Book"
-          type="submit"
-          (onClick)="onSubmit()"
-        ></p-button>
+          (click)="onSubmit()"
+          [loading]="isSubmitting || isSigning()"
+          [disabled]="isSubmitting || isSigning()"
+        />
       </div>
     </form>
   </div>

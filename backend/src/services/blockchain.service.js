@@ -24,13 +24,20 @@ export async function registerBookOnChain(bookUuid, title, author) {
   return tx.hash;
 }
 
-export async function logEventOnChain(bookUuid, eventHash, signerAddress) {
+export async function logEventOnChain(
+  bookUuid,
+  eventHash,
+  signerAddress,
+  signature,
+) {
   const signer = signerAddress ?? ethers.ZeroAddress;
   const bookId = ethers.keccak256(ethers.toUtf8Bytes(bookUuid));
   const eventHashBytes = `0x${eventHash}`;
-  const emptySig = "0x" + "00".repeat(65);
+
+  const sig = signature ?? "0x" + "00".repeat(65);
+
   const nonce = await provider.getTransactionCount(wallet.address, "pending");
-  const tx = await contract.logEvent(bookId, eventHashBytes, signer, emptySig, {
+  const tx = await contract.logEvent(bookId, eventHashBytes, signer, sig, {
     nonce,
   });
   await tx.wait();
@@ -46,4 +53,16 @@ export async function mintBadgeOnChain(walletAddress, badgeId) {
 
 export async function getUserNonce(walletAddress) {
   return await contract.nonces(walletAddress);
+}
+
+export async function waitForBookRegistration(bookUuid, maxRetries = 10) {
+  const bookId = ethers.keccak256(ethers.toUtf8Bytes(bookUuid));
+
+  for (let i = 0; i < maxRetries; i++) {
+    const isRegistered = await contract.isBookRegistered(bookId);
+    if (isRegistered) return true;
+    console.log(`Waiting for book registration... attempt ${i + 1}`);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  return false;
 }

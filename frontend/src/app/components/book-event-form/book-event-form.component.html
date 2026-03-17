@@ -62,7 +62,12 @@
 
     <div class="buttons">
       <p-button label="Cancel" severity="secondary" (click)="close()" />
-      <p-button label="Save" (click)="save()" />
+      <p-button
+        label="Save"
+        (click)="save()"
+        [loading]="isSigning()"
+        [disabled]="isSigning()"
+      />
     </div>
   </p-dialog>
 </div>

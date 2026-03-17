@@ -25,11 +25,13 @@ export class VerificationService {
   );
 
   async verifyBook(book: {
-    id: string;
-    title: string;
-    author: string;
+    id?: string;
+    title?: string;
+    author?: string;
   }): Promise<VerificationStatus> {
     try {
+      if (!book.id || !book.title || !book.author) return 'not_on_chain';
+
       const bookId = ethers.keccak256(
         ethers.toUtf8Bytes(book.id),
       ) as `0x${string}`;

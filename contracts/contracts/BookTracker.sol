@@ -44,12 +44,21 @@ function logEvent(
     require(registeredBooks[bookId], "Book not registered");
     require(!loggedEvents[eventHash], "Event already logged");
 
-    // TODO: EIP-712 will be added later
-    // bytes32 digest = _hashTypedDataV4(...);
-    // address recovered = ECDSA.recover(digest, signature);
-    // require(recovered == signer, "Invalid signature");
+    if (signer != address(0)) {
+        bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
+            EVENT_TYPEHASH,
+            bookId,
+            eventHash,
+            signer,
+            nonces[signer]
+        )));
 
-    nonces[signer]++;
+        address recovered = ECDSA.recover(digest, signature);
+        require(recovered == signer, "Invalid signature");
+        
+        nonces[signer]++;
+    }
+
     loggedEvents[eventHash] = true;
     emit EventLogged(bookId, eventHash, signer, block.timestamp);
 }

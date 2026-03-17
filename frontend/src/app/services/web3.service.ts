@@ -112,4 +112,49 @@ export class Web3Service {
     const nonce = await contract['nonces'](address);
     return Number(nonce);
   }
+
+  async signBookRegistration(
+    bookId: string,
+    title: string,
+    author: string,
+  ): Promise<string> {
+    if (!this.signer) throw new Error("Wallet isn't connected");
+
+    const domain = {
+      name: 'BookTracker',
+      version: '1',
+      chainId: 31337,
+      verifyingContract: environment.contractAddress,
+    };
+
+    const types = {
+      BookRegistration: [
+        { name: 'bookId', type: 'bytes32' },
+        { name: 'bookHash', type: 'bytes32' },
+        { name: 'owner', type: 'address' },
+      ],
+    };
+
+    const bookHash = await this.computeBookHash(bookId, title, author);
+
+    const value = {
+      bookId: ethers.keccak256(ethers.toUtf8Bytes(bookId)) as `0x${string}`,
+      bookHash: `0x${bookHash}` as `0x${string}`,
+      owner: await this.signer.getAddress(),
+    };
+
+    return await this.signer.signTypedData(domain, types, value);
+  }
+
+  private async computeBookHash(
+    bookId: string,
+    title: string,
+    author: string,
+  ): Promise<string> {
+    const input = `${bookId}::${title}::${author}`;
+    const msgBuffer = new TextEncoder().encode(input);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
 }

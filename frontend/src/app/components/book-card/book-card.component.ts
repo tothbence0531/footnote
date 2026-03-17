@@ -41,7 +41,7 @@ export class BookCardComponent {
       return;
     }
     this.bookmarkGeneratorService
-      .generateBookmark(this.book()!.id, '/assets/bookmark.png')
+      .generateBookmark(this.book()!.id!, '/assets/bookmark.png')
       .then(() => {
         this.toastService.success('Bookmark generated successfully');
       })

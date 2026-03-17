@@ -31,7 +31,7 @@ import {
 export class BookDetailsComponent {
   bookId: string | null = null;
   book = signal<Book | null>(null);
-
+  currentUserId = signal<string | null>(null);
   bookVerification = signal<VerificationStatus>('pending');
   eventVerifications = signal<Map<string, VerificationStatus>>(new Map());
 
@@ -45,6 +45,10 @@ export class BookDetailsComponent {
     private eventService: BookEventService,
     private verificationService: VerificationService,
   ) {
+    this.authService.currentUser$.pipe(take(1)).subscribe((user) => {
+      this.currentUserId.set(user?.userId ?? null);
+    });
+
     this.bookId = this.route.snapshot.paramMap.get('id');
     if (!this.bookId) {
       this.toastService.error('No book id provided');
@@ -96,7 +100,12 @@ export class BookDetailsComponent {
     }
   }
 
-  submitBookEvent(event: { event: BookEvent; files: File[] }) {
+  submitBookEvent(event: {
+    event: BookEvent;
+    files: File[];
+    signature?: string;
+    walletAddress?: string;
+  }) {
     this.authService.currentUser$.pipe(take(1)).subscribe({
       next: (user) => {
         if (!user || !user.userId) {
@@ -113,18 +122,24 @@ export class BookDetailsComponent {
           ...event.event,
           user_id: user.userId,
           book_id: this.bookId,
-          created_at: new Date().toISOString(),
+          created_at: event.event.created_at ?? new Date().toISOString(),
         };
 
         if (!this.book()) {
           this.toastService.error('Book not found');
           return;
         }
+
         this.eventService
-          .addEvent(bookEvent, event.files)
+          .addEvent(
+            bookEvent,
+            event.files,
+            event.signature,
+            event.walletAddress,
+          )
           .pipe(take(1))
           .subscribe({
-            next: (event) => {
+            next: () => {
               this.toastService.success('Event added!');
               if (!this.bookId) {
                 this.toastService.error('No book id provided');

@@ -53,7 +53,7 @@ export async function addBook(book) {
     await booksDao.updateBookChainTx(addedBook.id, txHash);
     console.log(`Book ${addedBook.id} registered on chain: ${txHash}`);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
   } catch (err) {
     console.error(`Chain registration failed for book ${addedBook.id}:`, err);
   }

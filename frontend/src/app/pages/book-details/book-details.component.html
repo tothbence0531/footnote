@@ -87,4 +87,6 @@
   [visible]="this.dialogService.bookEventVisible()"
   (visibleChange)="this.dialogService.bookEventVisible.set($event)"
   (onSubmit)="this.submitBookEvent($event)"
+  [bookId]="bookId"
+  [userId]="currentUserId()"
 ></app-book-event-form>

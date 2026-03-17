@@ -12,12 +12,22 @@ export class BookEventService {
 
   constructor(private http: HttpClient) {}
 
-  addEvent(event: BookEvent, files: File[]): Observable<BookEvent> {
+  addEvent(
+    event: BookEvent,
+    files: File[],
+    signature?: string,
+    walletAddress?: string,
+  ): Observable<BookEvent> {
     const formData = new FormData();
     formData.append('book_id', event.book_id);
     formData.append('location', event.location);
     formData.append('description', event.description);
     formData.append('rating', event.rating.toString());
+    formData.append('created_at', event.created_at);
+
+    if (signature) formData.append('signature', signature);
+    if (walletAddress) formData.append('wallet_address', walletAddress);
+
     files.forEach((file) => formData.append('images', file));
 
     return this.http.post<BookEvent>(`${this.API_URL}/events`, formData);

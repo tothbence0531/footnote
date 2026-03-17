@@ -15,8 +15,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { BookEvent, BookEventImage } from '../../models/book-event.model';
+import { BookEvent } from '../../models/book-event.model';
 import { ToastService } from '../../services/toast.service';
+import { Web3Service } from '../../services/web3.service';
+import { environment } from '../../../environments/environment.dev';
+
+const NONCE_ABI = ['function nonces(address) view returns (uint256)'];
 
 @Component({
   selector: 'app-book-event-form',
@@ -39,15 +43,23 @@ import { ToastService } from '../../services/toast.service';
 export class BookEventFormComponent {
   visible = input.required<boolean>();
   visibleChange = output<boolean>();
-  onSubmit = output<{ event: BookEvent; files: File[] }>();
+  onSubmit = output<{
+    event: BookEvent;
+    files: File[];
+    signature?: string;
+    walletAddress?: string;
+  }>();
+  bookId = input<string | null>(null);
 
   private fb = inject(FormBuilder);
-
+  isSigning = signal(false);
+  userId = input<string | null>(null);
   uploadedFiles: any[] = [];
 
   constructor(
     private dialogService: DialogService,
     private toastService: ToastService,
+    private web3Service: Web3Service,
   ) {}
 
   addEventForm = this.fb.group({
@@ -66,7 +78,7 @@ export class BookEventFormComponent {
     this.dialogService.hideBookEvent();
   }
 
-  save() {
+  async save() {
     if (this.addEventForm.invalid) {
       this.toastService.error('Please fill in all required fields');
       return;
@@ -84,10 +96,61 @@ export class BookEventFormComponent {
       return;
     }
 
-    this.onSubmit.emit({
-      event: this.addEventForm.value as BookEvent,
-      files: this.uploadedFiles,
-    });
+    const eventData = this.addEventForm.value as BookEvent;
+
+    if (this.web3Service.isConnected() && this.bookId()) {
+      try {
+        this.isSigning.set(true);
+
+        const createdAt = new Date().toISOString();
+        const hashInput = `${this.bookId()}::${this.userId()}::${eventData.description}::${eventData.location}::${eventData.rating}::${createdAt}`;
+        const msgBuffer = new TextEncoder().encode(hashInput);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const eventHash = hashArray
+          .map((b) => b.toString(16).padStart(2, '0'))
+          .join('');
+
+        const nonce = await this.web3Service.getNonce(
+          environment.contractAddress,
+          NONCE_ABI,
+        );
+
+        const signature = await this.web3Service.signBookEvent(
+          this.bookId()!,
+          eventHash,
+          nonce,
+        );
+
+        this.isSigning.set(false);
+
+        this.onSubmit.emit({
+          event: { ...eventData, created_at: createdAt },
+          files: this.uploadedFiles,
+          signature,
+          walletAddress: this.web3Service.walletAddress()!,
+        });
+      } catch (err: any) {
+        this.isSigning.set(false);
+
+        const isCancelled =
+          err.code === 4001 ||
+          err.code === 'ACTION_REJECTED' ||
+          err?.info?.error?.code === 4001 ||
+          err.message?.includes('rejected') ||
+          err.message?.includes('cancelled');
+
+        if (isCancelled) {
+          this.toastService.error('Signing cancelled');
+        } else {
+          this.toastService.error(err.message ?? 'Signing failed');
+        }
+        return;
+      }
+    } else {
+      this.toastService.error('Connect your wallet to sign the event');
+      return;
+    }
 
     this.close();
   }
