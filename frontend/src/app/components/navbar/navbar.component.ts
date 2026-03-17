@@ -4,6 +4,8 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService } from '../../services/dialog.service';
 import { AuthService } from '../../services/auth.service';
+import { Web3Service } from '../../services/web3.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,6 +19,8 @@ export class NavbarComponent {
   constructor(
     private authDialogService: DialogService,
     private AuthService: AuthService,
+    public web3Service: Web3Service,
+    private toastService: ToastService,
   ) {}
   showDialog() {
     this.authDialogService.showLogin();
@@ -29,5 +33,21 @@ export class NavbarComponent {
 
   onLogout() {
     this.logout.emit();
+  }
+
+  disconnectWallet() {
+    this.web3Service.disconnect();
+    this.toastService.success('Wallet disconnected');
+  }
+
+  async connectWallet() {
+    try {
+      const address = await this.web3Service.connect();
+      this.toastService.success(
+        `Wallet connected: ${address.slice(0, 6)}...${address.slice(-4)}`,
+      );
+    } catch (err: any) {
+      this.toastService.error(err.message ?? 'Wallet connection failed');
+    }
   }
 }

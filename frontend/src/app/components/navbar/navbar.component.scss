@@ -46,6 +46,47 @@
         }
       }
     }
+
+    .wallet-connected {
+      background-color: var(--p-surface-800);
+      color: var(--p-primary-50);
+      padding: $spacingSmall / 2;
+      border-radius: $borderRadiusSmall;
+      display: flex;
+      align-items: center;
+      gap: $spacingSmall;
+      cursor: default;
+
+      .disconnect-icon {
+        display: none;
+      }
+
+      &:hover {
+        background-color: var(--p-red-800);
+        color: var(--p-red-50);
+        cursor: pointer;
+
+        .wallet-icon {
+          display: none;
+        }
+        .disconnect-icon {
+          display: inline;
+          color: var(--p-red-50);
+        }
+      }
+
+      i {
+        color: var(--p-primary-50);
+        &:hover {
+          color: var(--p-red-50);
+        }
+      }
+
+      .wallet-address {
+        font-size: $fontSizeSmallest;
+        font-weight: 600;
+      }
+    }
   }
 }
 

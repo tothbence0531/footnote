@@ -13,6 +13,26 @@
       </li>
       <!-- <li class="nav-link" routerLink="/profile"><i class="pi pi-user"></i></li> -->
 
+      @if (web3Service.isConnected()) {
+        <li
+          class="nav-link wallet-connected"
+          [title]="web3Service.walletAddress()!"
+          (click)="disconnectWallet()"
+        >
+          <i class="pi pi-wallet wallet-icon"></i>
+          <i class="pi pi-times-circle disconnect-icon"></i>
+          <span class="wallet-address">
+            {{ web3Service.walletAddress()!.slice(0, 6) }}...{{
+              web3Service.walletAddress()!.slice(-4)
+            }}
+          </span>
+        </li>
+      } @else {
+        <li class="nav-link" (click)="connectWallet()">
+          <i class="pi pi-wallet"></i>
+        </li>
+      }
+
       @if (isLoggedIn()) {
         <li class="nav-link" (click)="onLogout()">
           <i class="pi pi-sign-out"></i>
