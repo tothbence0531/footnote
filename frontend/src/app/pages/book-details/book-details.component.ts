@@ -97,6 +97,15 @@ export class BookDetailsComponent {
         }),
       );
       this.eventVerifications.set(map);
+
+      const hasUnverified = [...map.values()].some(
+        (s) => s === 'not_on_chain' || s === 'pending',
+      );
+      if (hasUnverified) {
+        setTimeout(() => {
+          this.verifyBookAndEvents(book);
+        }, 15000);
+      }
     }
   }
 

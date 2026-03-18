@@ -90,7 +90,7 @@ export class Web3Service {
     const domain = {
       name: 'BookTracker',
       version: '1',
-      chainId: 31337,
+      chainId: 11155111, // Sepolia
       verifyingContract: environment.contractAddress,
     };
 
@@ -129,7 +129,7 @@ export class Web3Service {
     const domain = {
       name: 'BookTracker',
       version: '1',
-      chainId: 31337,
+      chainId: 11155111, // Sepolia
       verifyingContract: environment.contractAddress,
     };
 

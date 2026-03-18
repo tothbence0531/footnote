@@ -55,13 +55,16 @@ export async function getUserNonce(walletAddress) {
   return await contract.nonces(walletAddress);
 }
 
-export async function waitForBookRegistration(bookUuid, maxRetries = 10) {
+export async function waitForBookRegistration(bookUuid, maxRetries = 30) {
   const bookId = ethers.keccak256(ethers.toUtf8Bytes(bookUuid));
 
   for (let i = 0; i < maxRetries; i++) {
     const isRegistered = await contract.isBookRegistered(bookId);
     if (isRegistered) return true;
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(
+      `Waiting for book registration... attempt ${i + 1}/${maxRetries}`,
+    );
+    await new Promise((resolve) => setTimeout(resolve, 2000));
   }
   return false;
 }

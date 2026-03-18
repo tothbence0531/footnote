@@ -44,19 +44,19 @@ export async function addBook(book) {
     entity_id: addedBook.id,
   });
 
-  try {
-    const txHash = await registerBookOnChain(
-      addedBook.id,
-      addedBook.title,
-      addedBook.author,
-    );
-    await booksDao.updateBookChainTx(addedBook.id, txHash);
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-  } catch (err) {
-    console.error(`Chain registration failed for book ${addedBook.id}:`, err);
-  }
-
+  setImmediate(async () => {
+    try {
+      const txHash = await registerBookOnChain(
+        addedBook.id,
+        addedBook.title,
+        addedBook.author,
+      );
+      await booksDao.updateBookChainTx(addedBook.id, txHash);
+      console.log(`Book ${addedBook.id} registered on chain: ${txHash}`);
+    } catch (err) {
+      console.error(`Chain registration failed:`, err);
+    }
+  });
   return addedBook;
 }
 

@@ -50,17 +50,16 @@ export async function addEvent(eventData, files) {
     entity_id: event.id.toString(),
   });
 
-  const bookAge = Date.now() - new Date(bookExists.created_at).getTime();
-  if (bookAge < 5000) {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-  }
+  setImmediate(async () => {
+    console.log("Waiting for book registration...");
+    const isRegistered = await waitForBookRegistration(eventData.book_id);
+    console.log("Book registered on chain:", isRegistered);
 
-  const isRegistered = await waitForBookRegistration(eventData.book_id);
-  if (!isRegistered) {
-    console.error(
-      `Book ${eventData.book_id} not registered on chain, skipping event log`,
-    );
-  } else {
+    if (!isRegistered) {
+      console.error(`Book ${eventData.book_id} not registered on chain`);
+      return;
+    }
+
     try {
       const txHash = await logEventOnChain(
         eventData.book_id,
@@ -69,10 +68,10 @@ export async function addEvent(eventData, files) {
         eventData.signature ?? null,
       );
       await eventDao.updateEventChainTx(event.id, txHash);
+      console.log(`Event ${event.id} logged on chain: ${txHash}`);
     } catch (err) {
       console.error(`Chain log failed for event ${event.id}:`, err);
     }
-  }
-
+  });
   return { ...event, images };
 }
