@@ -1,4 +1,5 @@
 import * as authService from "../services/auth.service.js";
+import * as userDao from "../daos/user.dao.js";
 
 export async function register(req, res, next) {
   try {
@@ -79,6 +80,24 @@ export async function logout(req, res, next) {
     res.status(200).json({
       success: true,
       message: "Logged out successfully",
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getFullUser(req, res, next) {
+  try {
+    const user = await userDao.selectUserById(req.user.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json({
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      points: user.points,
+      wallet_address: user.wallet_address,
+      created_at: user.created_at,
     });
   } catch (err) {
     next(err);

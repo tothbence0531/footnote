@@ -34,8 +34,8 @@
       }
 
       @if (isLoggedIn()) {
-        <li class="nav-link" (click)="onLogout()">
-          <i class="pi pi-sign-out"></i>
+        <li class="nav-link" routerLink="/profile">
+          <i class="pi pi-user"></i>
         </li>
       } @else {
         <li class="nav-link" (click)="showDialog()">

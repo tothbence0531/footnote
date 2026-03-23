@@ -1,0 +1,206 @@
+@use "../../styles/index.scss" as *;
+
+.profile-wrapper {
+  padding: $spacingLarge 0;
+
+  .container {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0 $spacingMedium;
+    display: flex;
+    flex-direction: column;
+    gap: $spacingLarge;
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: $spacingLarge;
+      padding: $spacingLarge;
+      background: var(--p-primary-100);
+      border-radius: $borderRadiusLarge;
+
+      .logout {
+        margin-left: auto;
+        cursor: pointer;
+        transition: $transitionFast;
+
+        &:hover {
+          color: var(--p-primary-700);
+          transition: $transitionFast;
+        }
+      }
+
+      .avatar {
+        width: 5rem;
+        height: 5rem;
+        border-radius: $borderRadiusLargest;
+        background: var(--p-primary-600);
+        color: var(--p-primary-50);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $fontSizeLargest;
+        font-weight: $fontWeightBold;
+        flex-shrink: 0;
+      }
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        gap: $spacingSmall;
+        position: relative;
+
+        .username {
+          font-size: $fontSizeLarge;
+          font-weight: $fontWeightBold;
+          margin: 0;
+        }
+
+        .email {
+          font-size: $fontSizeSmaller;
+          color: var(--p-surface-500);
+          margin: 0;
+        }
+
+        .wallet-pill {
+          display: flex;
+          align-items: center;
+          gap: $spacingSmallest;
+          padding: $spacingSmallest $spacingMedium;
+          border-radius: $borderRadiusSmall;
+          font-size: $fontSizeSmallest;
+          font-weight: $fontWeightSemiBold;
+          width: fit-content;
+          transition: $transitionFast;
+
+          &.connected {
+            background: var(--p-primary-400);
+            color: var(--p-primary-50);
+          }
+
+          &.disconnected {
+            background: var(--p-surface-100);
+            color: var(--p-surface-600);
+            cursor: pointer;
+
+            &:hover {
+              background: var(--p-surface-300);
+            }
+          }
+        }
+      }
+    }
+
+    .badges-section {
+      display: flex;
+      flex-direction: column;
+      gap: $spacingMedium;
+
+      .loading {
+        text-align: center;
+        color: var(--p-surface-600);
+        padding: $spacingLarge;
+      }
+
+      .section-title {
+        font-size: $fontSizeLarger;
+        font-weight: $fontWeightBold;
+        margin: 0;
+      }
+
+      .section-subtitle {
+        font-size: $fontSizeSmaller;
+        color: var(--p-surface-600);
+        margin: 0;
+      }
+
+      .badges-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+        gap: $spacingMedium;
+
+        .badge-card {
+          display: flex;
+          gap: $spacingMedium;
+          padding: $spacingMedium;
+          border-radius: $borderRadiusLarge;
+          transition: $transitionMedium;
+
+          &.earned {
+            background: var(--p-primary-50);
+            border: 1px solid var(--p-primary-200);
+          }
+
+          &.locked {
+            opacity: 0.5;
+            filter: grayscale(1);
+          }
+        }
+
+        .badge-image-wrapper {
+          position: relative;
+          width: 3rem;
+          height: 3rem;
+          flex-shrink: 0;
+
+          .badge-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: $borderRadiusMedium;
+
+            &.grayscale {
+              filter: grayscale(1) opacity(0.4);
+            }
+          }
+        }
+
+        .badge-body {
+          display: flex;
+          flex-direction: column;
+
+          .badge-name {
+            font-size: $fontSizeSmall;
+            font-weight: $fontWeightSemiBold;
+            margin: 0;
+          }
+
+          .badge-meta {
+            display: flex;
+            flex-direction: column;
+            gap: $spacingSmallest;
+            margin-top: $spacingSmallest;
+
+            .obtained-at {
+              font-size: $fontSizeSmallest;
+              color: var(--p-surface-600);
+            }
+
+            .chain-link {
+              font-size: $fontSizeSmallest;
+              color: var(--p-primary-500);
+              text-decoration: none;
+              font-weight: $fontWeightSemiBold;
+              transition: $transitionFast;
+
+              &:hover {
+                transition: $transitionFast;
+                color: var(--p-primary-700);
+              }
+            }
+
+            .chain-pending {
+              font-size: $fontSizeSmallest;
+              color: var(--p-orange-500);
+            }
+          }
+
+          .locked-label {
+            font-size: $fontSizeSmallest;
+            color: var(--p-surface-500);
+          }
+        }
+      }
+    }
+  }
+}

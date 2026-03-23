@@ -1,9 +1,8 @@
-// src/app/services/auth.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.dev';
 import { LoginResponse } from '../models/loginResponse.model';
-import { getMeResponse, Me, User } from '../models/user.model';
+import { getMeResponse, Me, User, UserProfile } from '../models/user.model';
 import {
   BehaviorSubject,
   Observable,
@@ -17,7 +16,6 @@ import {
   setAccessToken,
   getAccessToken,
 } from '../interceptors/auth.interceptor';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -63,6 +61,10 @@ export class AuthService {
 
   getMe(): Observable<getMeResponse> {
     return this.http.get<getMeResponse>(`${this.apiUrl}/auth/me`);
+  }
+
+  getUserProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}/auth/users/me`);
   }
 
   login(email: string, password: string): Observable<void> {

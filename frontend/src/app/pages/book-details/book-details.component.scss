@@ -10,9 +10,14 @@ $media-mobile: $breakpoint-sm;
 
 .wrapper {
   margin-top: $spacingLarger;
+  padding-bottom: $spacingLarge;
 
   .tree {
     position: relative;
+  }
+
+  .mobile-add-event {
+    display: none;
   }
 
   .verification-badge {
@@ -162,6 +167,14 @@ $media-mobile: $breakpoint-sm;
     .child::before,
     .parent-row::after {
       display: none;
+    }
+
+    .add-event {
+      display: none;
+    }
+
+    .mobile-add-event {
+      display: block;
     }
 
     .parent-row,

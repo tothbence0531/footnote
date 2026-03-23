@@ -1,6 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { ethers } from 'ethers';
 import { environment } from '../../environments/environment.dev';
+import { HttpClient } from '@angular/common/http';
+import { take } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class Web3Service {
@@ -10,7 +12,7 @@ export class Web3Service {
   walletAddress = signal<string | null>(null);
   isConnected = signal<boolean>(false);
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.autoConnect();
   }
 
@@ -46,6 +48,8 @@ export class Web3Service {
     this.walletAddress.set(address);
     this.isConnected.set(true);
 
+    await this.saveWalletToBackend(address);
+
     window.ethereum.on('accountsChanged', (accounts: string[]) => {
       if (accounts.length === 0) {
         this.disconnect();
@@ -57,6 +61,23 @@ export class Web3Service {
     localStorage.removeItem('wallet_disconnected');
 
     return address;
+  }
+
+  private saveWalletToBackend(address: string): Promise<void> {
+    return new Promise((resolve) => {
+      this.http
+        .post(`${environment.apiUrl}/auth/users/wallet`, {
+          walletAddress: address,
+        })
+        .pipe(take(1))
+        .subscribe({
+          next: () => resolve(),
+          error: (err) => {
+            console.error('Wallet mentés sikertelen:', err);
+            resolve();
+          },
+        });
+    });
   }
 
   disconnect() {

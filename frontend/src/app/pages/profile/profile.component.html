@@ -1,1 +1,89 @@
-<p>profile works!</p>
+<div class="profile-wrapper">
+  <div class="container">
+    <div class="user-card">
+      <div class="avatar">
+        {{ userProfile()?.username?.charAt(0)?.toUpperCase() }}
+      </div>
+      <div class="user-info">
+        <h1 class="username">{{ userProfile()?.username }}</h1>
+        <p class="email">{{ userProfile()?.email }}</p>
+
+        @if (web3Service.isConnected()) {
+          <div class="wallet-pill connected">
+            <i class="pi pi-wallet wallet-icon"></i>
+            {{ web3Service.walletAddress()!.slice(0, 6) }}...{{
+              web3Service.walletAddress()!.slice(-4)
+            }}
+          </div>
+        } @else {
+          <div class="wallet-pill disconnected" (click)="connectWallet()">
+            Connect wallet
+          </div>
+        }
+      </div>
+      <div class="logout">
+        <i class="pi pi-sign-out" (click)="logout()"></i>
+      </div>
+    </div>
+
+    <div class="badges-section">
+      <h2 class="section-title">Badges</h2>
+      <p class="section-subtitle">
+        {{ earnedBadges().length }} / {{ allBadges().length }} obtained
+      </p>
+
+      @if (isLoading()) {
+        <div class="loading">Loading...</div>
+      } @else {
+        <div class="badges-grid">
+          @for (badge of allBadges(); track badge.id) {
+            <div
+              class="badge-card"
+              [class.earned]="hasEarned(badge.id)"
+              [class.locked]="!hasEarned(badge.id)"
+            >
+              <div class="badge-image-wrapper">
+                <img
+                  [src]="this.API_URL + '/uploads/' + badge.image_url"
+                  [alt]="badge.name"
+                  class="badge-image"
+                  [class.grayscale]="!hasEarned(badge.id)"
+                />
+                @if (isOnChain(badge.id)) {
+                  <div class="chain-indicator" title="On-chain verified"></div>
+                }
+              </div>
+
+              <div class="badge-body">
+                <p class="badge-name">{{ badge.name }}</p>
+
+                @if (hasEarned(badge.id)) {
+                  <div class="badge-meta">
+                    <span class="obtained-at">
+                      {{
+                        getEarned(badge.id)?.obtained_at | date: "yyyy. MM. dd."
+                      }}
+                    </span>
+                    @if (isOnChain(badge.id)) {
+                      <a
+                        class="chain-link"
+                        [href]="getEtherscanUrl(badge.id)"
+                        target="_blank"
+                      >
+                        On-chain
+                      </a>
+                    } @else {
+                      <span class="chain-pending">Pending verification...</span>
+                    }
+                  </div>
+                } @else {
+                  <span class="locked-label">Not earned yet</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

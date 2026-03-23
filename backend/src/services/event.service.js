@@ -12,6 +12,7 @@ import {
   logEventOnChain,
   waitForBookRegistration,
 } from "./blockchain.service.js";
+import { checkEventBadges } from "./badge.service.js";
 
 export async function addEvent(eventData, files) {
   const userExists = await userDao.selectUserById(eventData.user_id);
@@ -51,14 +52,8 @@ export async function addEvent(eventData, files) {
   });
 
   setImmediate(async () => {
-    console.log("Waiting for book registration...");
     const isRegistered = await waitForBookRegistration(eventData.book_id);
-    console.log("Book registered on chain:", isRegistered);
-
-    if (!isRegistered) {
-      console.error(`Book ${eventData.book_id} not registered on chain`);
-      return;
-    }
+    if (!isRegistered) return;
 
     try {
       const txHash = await logEventOnChain(
@@ -69,9 +64,12 @@ export async function addEvent(eventData, files) {
       );
       await eventDao.updateEventChainTx(event.id, txHash);
       console.log(`Event ${event.id} logged on chain: ${txHash}`);
+
+      await checkEventBadges(eventData.user_id);
     } catch (err) {
       console.error(`Chain log failed for event ${event.id}:`, err);
     }
   });
+
   return { ...event, images };
 }

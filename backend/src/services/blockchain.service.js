@@ -30,6 +30,15 @@ export async function logEventOnChain(
   signerAddress,
   signature,
 ) {
+  console.log("=== CHAIN LOG DEBUG ===");
+  console.log("signer:", signerAddress);
+  console.log("signature:", signature?.slice(0, 20));
+
+  if (signerAddress && signerAddress !== ethers.ZeroAddress) {
+    const nonce = await contract.nonces(signerAddress);
+    console.log("current nonce on chain:", nonce.toString());
+  }
+  console.log("======================");
   const signer = signerAddress ?? ethers.ZeroAddress;
   const bookId = ethers.keccak256(ethers.toUtf8Bytes(bookUuid));
   const eventHashBytes = `0x${eventHash}`;
@@ -71,4 +80,9 @@ export async function waitForBookRegistration(bookUuid, maxRetries = 30) {
 
 export async function getOnChainNonce(walletAddress) {
   return Number(await contract.nonces(walletAddress));
+}
+
+export async function hasBadgeOnChain(walletAddress, tokenId) {
+  const balance = await contract.balanceOf(walletAddress, tokenId);
+  return Number(balance) > 0;
 }

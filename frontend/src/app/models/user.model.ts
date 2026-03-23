@@ -20,3 +20,12 @@ export interface Me {
   iat: number;
   exp: number;
 }
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  username: string;
+  points: number;
+  wallet_address: string | null;
+  created_at: string;
+}

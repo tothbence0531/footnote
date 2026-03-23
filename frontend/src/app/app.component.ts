@@ -75,21 +75,4 @@ export class AppComponent {
       },
     });
   }
-
-  onLogout() {
-    this.authService
-      .logout()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (res) => {
-          console.log('Logout successful', res);
-          this.toastService.success('Logged out successfully');
-        },
-        error: (err) => {
-          console.log('Logout failed: ', err);
-          this.error = err?.error?.error?.message || 'Logout failed';
-          this.toastService.error(this.error);
-        },
-      });
-  }
 }

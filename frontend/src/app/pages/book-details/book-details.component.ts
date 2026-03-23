@@ -16,6 +16,7 @@ import {
   VerificationService,
   VerificationStatus,
 } from '../../services/verification.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-book-details',
@@ -24,6 +25,7 @@ import {
     BookEventCardComponent,
     BookEventFormComponent,
     TooltipModule,
+    ButtonModule,
   ],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.scss',

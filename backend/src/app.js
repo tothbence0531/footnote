@@ -17,6 +17,7 @@ import { fileURLToPath } from "url";
 import activityRoutes from "./routes/activity.routes.js";
 import { getOnChainNonce } from "./services/blockchain.service.js";
 import { authMiddleware } from "./middlewares/auth.middleware.js";
+import badgeRoutes from "./routes/badge.routes.js";
 
 const app = express();
 
@@ -48,9 +49,9 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // INFO: Apply rate limiters
-app.use("/api", generalLimiter);
-app.use("/api/auth/login", authLimiter);
-app.use("/api/auth/register", authLimiter);
+// app.use("/api", generalLimiter);
+// app.use("/api/auth/login", authLimiter);
+// app.use("/api/auth/register", authLimiter);
 
 // INFO: static assets
 app.use(
@@ -60,6 +61,15 @@ app.use(
     next();
   },
   express.static(path.join(__dirname, "../uploads")),
+);
+
+app.use(
+  "/api/uploads/badges",
+  (req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  },
+  express.static(path.join(__dirname, "../uploads/badges")),
 );
 
 app.use(
@@ -82,6 +92,9 @@ app.use("/api/activity", activityRoutes);
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
 });
+
+// INFO: bagde routes
+app.use("/api", badgeRoutes);
 
 // INFO: blockchain routes
 app.get("/api/blockchain/nonce/:address", async (req, res, next) => {

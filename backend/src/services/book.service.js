@@ -9,6 +9,7 @@ import {
 } from "../utils/bookErrors.js";
 import { logActivity, ACTIVITY_TYPES } from "./activity.service.js";
 import { registerBookOnChain } from "./blockchain.service.js";
+import { checkBookBadges } from "./badge.service.js";
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -53,10 +54,13 @@ export async function addBook(book) {
       );
       await booksDao.updateBookChainTx(addedBook.id, txHash);
       console.log(`Book ${addedBook.id} registered on chain: ${txHash}`);
+
+      await checkBookBadges(addedBook.original_owner);
     } catch (err) {
       console.error(`Chain registration failed:`, err);
     }
   });
+
   return addedBook;
 }
 
