@@ -199,7 +199,7 @@ export class AddBookComponent {
         }),
       )
       .subscribe({
-        next: () => {
+        next: (response) => {
           this.toastService.success('Book and first event added successfully!');
           this.isSubmitting = false;
           this.addBookForm.reset();

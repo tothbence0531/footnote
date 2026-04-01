@@ -7,7 +7,7 @@ async function main() {
   console.log("Deploying BookTracker...");
 
   const contract = await viem.deployContract("BookTracker", [
-    "https://api.example.com/badges/{id}.json",
+    "http://localhost:3000/api/badges/",
   ]);
 
   console.log("BookTracker deployed to:", contract.address);

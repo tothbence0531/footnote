@@ -1,0 +1,50 @@
+Az OpenZeppelin egy auditált, megbízható library — nem te írod meg a kriptográfiát és token logikát nulláról. Más opció lett volna mindent kézzel implementálni, de az hibalehetőség és biztonsági kockázat.
+
+ERC1155 — a token szabvány, ez adja a _mint, balanceOf, safeTransferFrom stb. függvényeket
+EIP712 — strukturált adat aláíráshoz kell, ez adja a _hashTypedDataV4 függvényt
+Ownable — az onlyOwner modifikátort adja, csak a deployer hívhat egyes függvényeket
+
+Más opció: ERC721-et is használhattál volna badge-ekhez (minden badge teljesen egyedi NFT), de az ERC1155 rugalmasabb — egy contractban több badge típus kezelhető, és olcsóbb gas-ban.
+
+
+bytes32 public constant EVENT_TYPEHASH = keccak256(
+    "BookEvent(bytes32 bookId,bytes32 eventHash,address signer,uint256 nonce)"
+);
+
+Ez az EIP712 aláírás "sémája" — meghatározza hogy milyen struktúrát ír alá a user MetaMaskban. A keccak256 hash-eli ezt a stringet, és ez lesz az aláírás azonosítója. Ha bárki megpróbálná más struktúrával becsapni a contractot, az aláírás nem egyezne.
+
+mapping(address => uint256) public nonces;         // replay attack védelem
+mapping(bytes32 => bool) public loggedEvents;      // event duplikáció védelem
+mapping(bytes32 => bool) public registeredBooks;   // csak regisztrált könyvhöz lehet eventet logolni
+mapping(bytes32 => bytes32) public bookHashes;     // integritás ellenőrzéshez tárolt hash
+
+function uri(uint256 tokenId) public view override returns (string memory) {
+    return string(abi.encodePacked(_baseTokenURI, tokenId.toString(), ".json"));
+}
+
+Az ERC1155 alap uri() ugyanazt az URL-t adja vissza minden tokennek. Ez felülírja azt, hogy minden badge ID-hoz egyedi URL-t adjon vissza, pl. .../badges/3.json. Más opció lett volna IPFS-en tárolni a metaadatot — az decentralizáltabb, de nehezebb módosítani ha változik a badge képe vagy leírása.
+
+function setBaseURI(string memory newBaseURI) external onlyOwner {
+    _baseTokenURI = newBaseURI;
+}
+
+Ha változik a szerver domain, nem kell újra deployolni a contractot. Más opció: ha kihagynád, az URL örökre fix lenne a láncban — ez decentralizáltabb szemlélet, de rugalmatlan.
+
+
+logEvent() — a legösszetettebb függvény
+
+if (signer != address(0)) {
+    // EIP712 digest összerakása
+    bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
+        EVENT_TYPEHASH, bookId, eventHash, signer, nonces[signer]
+    )));
+
+    address recovered = ECDSA.recover(digest, signature);
+    require(recovered == signer, "Invalid signature");
+
+    nonces[signer]++;
+}
+}
+}
+
+A signer != address(0) feltétel azt jelenti hogy az aláírás opcionális — ha a usernek nincs MetaMask-ja, akkor is be lehet küldeni az eventet, csak aláírás nélkül. Az ECDSA.recover visszafejti az aláírásból hogy ki írta alá, és ellenőrzi hogy az egyezik-e a megadott signer címmel. Ez a kulcs — a backend nem tud hamisítani, mert nem tudja előállítani a user privát kulcsával aláírt adatot.

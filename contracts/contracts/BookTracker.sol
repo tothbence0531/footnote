@@ -5,9 +5,11 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract BookTracker is ERC1155, EIP712, Ownable {
     using ECDSA for bytes32;
+    using Strings for uint256;
 
     bytes32 public constant EVENT_TYPEHASH = keccak256(
         "BookEvent(bytes32 bookId,bytes32 eventHash,address signer,uint256 nonce)"
@@ -18,15 +20,27 @@ contract BookTracker is ERC1155, EIP712, Ownable {
     mapping(bytes32 => bool) public registeredBooks;
     mapping(bytes32 => bytes32) public bookHashes;
 
+    string private _baseTokenURI; 
+
     event BookRegistered(bytes32 indexed bookId, bytes32 bookHash, uint256 timestamp);
     event EventLogged(bytes32 indexed bookId, bytes32 indexed eventHash, address indexed signer, uint256 timestamp);
     event BadgeMinted(address indexed user, uint256 indexed badgeId, uint256 timestamp);
 
-    constructor(string memory uri)
-        ERC1155(uri)
+    constructor(string memory baseTokenURI)
+        ERC1155(baseTokenURI)
         EIP712("BookTracker", "1")
         Ownable(msg.sender)
-    {}
+    {
+        _baseTokenURI = baseTokenURI;
+    }
+
+    function uri(uint256 tokenId) public view override returns (string memory) {
+        return string(abi.encodePacked(_baseTokenURI, tokenId.toString(), ".json"));
+    }
+
+    function setBaseURI(string memory newBaseURI) external onlyOwner {
+        _baseTokenURI = newBaseURI;
+    }
 
     function registerBook(bytes32 bookId, bytes32 bookHash) external onlyOwner {
         require(!registeredBooks[bookId], "Already registered");
@@ -35,33 +49,33 @@ contract BookTracker is ERC1155, EIP712, Ownable {
         emit BookRegistered(bookId, bookHash, block.timestamp);
     }
 
-function logEvent(
-    bytes32 bookId,
-    bytes32 eventHash,
-    address signer,
-    bytes calldata signature
-) external onlyOwner {
-    require(registeredBooks[bookId], "Book not registered");
-    require(!loggedEvents[eventHash], "Event already logged");
+    function logEvent(
+        bytes32 bookId,
+        bytes32 eventHash,
+        address signer,
+        bytes calldata signature
+    ) external onlyOwner {
+        require(registeredBooks[bookId], "Book not registered");
+        require(!loggedEvents[eventHash], "Event already logged");
 
-    if (signer != address(0)) {
-        bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
-            EVENT_TYPEHASH,
-            bookId,
-            eventHash,
-            signer,
-            nonces[signer]
-        )));
+        if (signer != address(0)) {
+            bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
+                EVENT_TYPEHASH,
+                bookId,
+                eventHash,
+                signer,
+                nonces[signer]
+            )));
 
-        address recovered = ECDSA.recover(digest, signature);
-        require(recovered == signer, "Invalid signature");
-        
-        nonces[signer]++;
+            address recovered = ECDSA.recover(digest, signature);
+            require(recovered == signer, "Invalid signature");
+
+            nonces[signer]++;
+        }
+
+        loggedEvents[eventHash] = true;
+        emit EventLogged(bookId, eventHash, signer, block.timestamp);
     }
-
-    loggedEvents[eventHash] = true;
-    emit EventLogged(bookId, eventHash, signer, block.timestamp);
-}
 
     function mintBadge(address user, uint256 badgeId) external onlyOwner {
         require(balanceOf(user, badgeId) == 0, "Badge already owned");
@@ -74,8 +88,7 @@ function logEvent(
     }
 
     function isBookRegistered(bytes32 bookId) external view returns (bool) {
-        return registeredBooks[bookId];
-    }
+        return registeredBooks[bookId];}
 
     function isEventLogged(bytes32 eventHash) external view returns (bool) {
         return loggedEvents[eventHash];

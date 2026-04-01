@@ -2,5 +2,5 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
   rpcUrl: 'https://ethereum-sepolia-rpc.publicnode.com',
-  contractAddress: '0x85ebbce8ea3df8724cc98465d4f4aa730ef984eb',
+  contractAddress: '0x113012ff63273608aad7913516a14d2f542e9831',
 };

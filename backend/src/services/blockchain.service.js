@@ -1,4 +1,3 @@
-// services/blockchain.service.js
 import { ethers } from "ethers";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";

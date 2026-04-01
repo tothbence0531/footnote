@@ -10,10 +10,11 @@ import { CommonModule } from '@angular/common';
 import { ToastService } from '../../services/toast.service';
 import { environment } from '../../../environments/environment.dev';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -71,6 +72,10 @@ export class ProfileComponent {
   getEtherscanUrl(badgeId: number): string {
     const tx = this.getEarned(badgeId)?.chain_tx_hash;
     return `https://sepolia.etherscan.io/tx/${tx}`;
+  }
+
+  importBadgesToMetaMask() {
+    this.badgeService.addAllBadgesToMetaMask(this.earnedBadges());
   }
 
   async connectWallet() {
