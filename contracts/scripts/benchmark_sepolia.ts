@@ -11,7 +11,8 @@ async function main() {
   const contract = await viem.deployContract("BookTracker", [
     "http://localhost:3000/api/badges/",
   ]);
-  const [, user] = await viem.getWalletClients();
+  const wallets = await viem.getWalletClients();
+  const signer = wallets[1] ?? wallets[0];
   const publicClient = await viem.getPublicClient();
 
   const results: Record<
@@ -49,12 +50,12 @@ async function main() {
   );
 
   const eventHash2 = keccak256(toUtf8Bytes("event-sig")) as `0x${string}`;
-  const nonce = await contract.read.nonces([user.account.address]);
-  const signature = await user.signTypedData({
+  const nonce = await contract.read.nonces([signer.account.address]);
+  const signature = await signer.signTypedData({
     domain: {
       name: "BookTracker",
       version: "1",
-      chainId: 31337,
+      chainId: 11155111,
       verifyingContract: contract.address,
     },
     types: {
@@ -69,7 +70,7 @@ async function main() {
     message: {
       bookId,
       eventHash: eventHash2,
-      signer: user.account.address,
+      signer: signer.account.address,
       nonce,
     },
   });
@@ -77,17 +78,20 @@ async function main() {
     contract.write.logEvent([
       bookId,
       eventHash2,
-      user.account.address,
+      signer.account.address,
       signature,
     ]),
   );
 
   await measure("mintBadge", () =>
-    contract.write.mintBadge([user.account.address, 1n]),
+    contract.write.mintBadge([signer.account.address, 1n]),
   );
 
-  fs.writeFileSync("gas-results-local.json", JSON.stringify(results, null, 2));
-  console.log("\nSaved to gas-results-local.json");
+  fs.writeFileSync(
+    "gas-results-sepolia.json",
+    JSON.stringify(results, null, 2),
+  );
+  console.log("\nSaved to gas-results-sepolia.json");
 }
 
 main().catch(console.error);

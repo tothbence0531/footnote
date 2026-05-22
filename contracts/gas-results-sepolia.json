@@ -1,0 +1,22 @@
+{
+  "registerBook": {
+    "gasUsed": 71626,
+    "timeMs": 12393,
+    "costUsd": "0.568288"
+  },
+  "logEvent_no_sig": {
+    "gasUsed": 52932,
+    "timeMs": 8356,
+    "costUsd": "0.423536"
+  },
+  "logEvent_eip712": {
+    "gasUsed": 82347,
+    "timeMs": 12407,
+    "costUsd": "0.682191"
+  },
+  "mintBadge": {
+    "gasUsed": 53433,
+    "timeMs": 12411,
+    "costUsd": "0.455220"
+  }
+}
